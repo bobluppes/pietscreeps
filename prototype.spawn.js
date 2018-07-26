@@ -136,20 +136,24 @@ StructureSpawn.prototype.spawnHaulerIfNeeded = function() {
 
 StructureSpawn.prototype.spawnUpgraderIfNeeded = function() {
   //Spawn conditions
-  if (true) {
+  if (this.getPopulation('upgraders') < 2) {
     let body = this.calcBody('upgrader');
     let newName = 'Upgrader' + Game.time;
     this.spawnCreep(body, newName, {memory: {role:'upgrader',building:false}});
+    return 1;
   }
+  return 'NOT NEEDED';
 }
 
 StructureSpawn.prototype.spawnBuilderIfNeeded = function() {
   //Spawn conditions
-  if (true) {
+  if (this.getPopulation('builders') < 2) {
     let body = this.calcBody('builder');
     let newName = 'Builder' + Game.time;
     this.spawnCreep(body, newName, {memory: {role:'builder',building:false}});
+    return 1;
   }
+  return 'NOT NEEDED';
 }
 
 StructureSpawn.prototype.spawnRepairerIfNeeded = function() {

@@ -7,8 +7,11 @@ var creepFactory = {
 
       //Check if we need to spawn
       if (spawn.spawnHarvesterIfNeeded() == 'NOT NEEDED') {
-        spawn.spawnUpgraderIfNeeded();
-        spawn.spawnBuilderIfNeeded();
+        if (spawn.spawnUpgraderIfNeeded() == 'NOT NEEDED') {
+          if (spawn.spawnBuilderIfNeeded() == 'NOT NEEDED') {
+            
+          }
+        }
       }
     }
 };
