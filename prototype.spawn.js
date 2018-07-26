@@ -1,4 +1,4 @@
-getPopulation = function(role) {
+StructureSpawn.prototype.getPopulation = function(role) {
   switch (role) {
     case 'harvesters': return _.filter(Game.creeps, (creep) => creep.memory.role == 'harvester').length;break;
     case 'remoteHarvesters': return _.filter(Game.creeps, (creep) => creep.memory.role == 'remoteHarvester').length;break;
@@ -12,7 +12,7 @@ getPopulation = function(role) {
   };
 }
 
-getStructures = function(structureType) {
+StructureSpawn.prototype.getStructures = function(structureType) {
   switch (structureType) {
     case STRUCTURE_SPAWN: return Game.spawns['Spawn1'].room.find(FIND_STRUCTURES, {filter: {structureType: STRUCTURE_SPAWN}}).length;break;
     case STRUCTURE_EXTENSION: return Game.spawns['Spawn1'].room.find(FIND_STRUCTURES, {filter: {structureType: STRUCTURE_EXTENSION}}).length;break;
@@ -36,7 +36,7 @@ getStructures = function(structureType) {
   }
 }
 
-getRoomInfo = function(info) {
+StructureSpawn.prototype.getRoomInfo = function(info) {
   switch (info) {
     case 'energyAvailable': return Game.spawns['Spawn1'].room.energyAvailable;break;
     case 'energyCap': return Game.spawns['Spawn1'].room.energyCapacityAvailable;break;
@@ -46,25 +46,28 @@ getRoomInfo = function(info) {
   }
 }
 
-calcBody = function(role) {
+StructureSpawn.prototype.calcBody = function(role) {
   let body = [];
 
-  addBaseParts = function() {
+  function addBaseParts() {
     body.push(WORK);
     body.push(WORK);
     body.push(CARRY);
     body.push(MOVE);
   }
 
-  addExtraParts = function() {
+  function addExtraParts() {
     body.push(WORK);
     body.push(CARRY);
     body.push(MOVE);
   }
 
   switch (role) {
+    case 'upgrader':
+    case 'builder':
+    case 'repairer':
     case 'harvester':
-      let extraParts = Math.floor((getRoomInfo('energyAvailable') - 300)/200);
+      let extraParts = Math.floor((this.getRoomInfo('energyCap') - 300)/200);
       addBaseParts();
       for (let i = 0; i < extraParts; i++) {
         addExtraParts();
@@ -76,12 +79,12 @@ calcBody = function(role) {
       break;
     case 'hauler':
       break;
-    case 'upgrader':
-      break;
-    case 'builder':
-      break;
-    case 'repairer':
-      break;
+    //case 'upgrader':
+      //break;
+    //case 'builder':
+      //break;
+    //case 'repairer':
+      //break;
     case 'wallRepairer':
       break;
     case 'protector':
@@ -91,23 +94,32 @@ calcBody = function(role) {
   return body;
 }
 
+StructureSpawn.prototype.assignSource = function() {
+  var sources = Game.spawns['Spawn1'].room.find(FIND_SOURCES);
+
+  if (_.filter(Game.creeps, (creep) => creep.memory.source == sources[0].id).length == 0) {
+    return sources[0].id;
+  } else if (_.filter(Game.creeps, (creep) => creep.memory.source == sources[1].id).length == 0) {
+    return sources[1].id;
+  }
+}
+
 
 //HARVESTERS
 //Harvest energy from sources in begin game
 //Pick up dropped resources
 //Take energy from tomb stones
-StructureSpawn.prototype.spawnHarvesterIfNeeded = function(spawn) {
+StructureSpawn.prototype.spawnHarvesterIfNeeded = function() {
   //Spawn conditions
-  if (getPopulation('miners') < getRoomInfo('sources')) {
-    //Spawn harvesters to harvest sources
+  if (this.getPopulation('harvesters') < this.getRoomInfo('sources')){
+    if ((this.getPopulation('miners') < this.getRoomInfo('sources')) || (this.getRoomInfo('droppedResources') != 0) || (this.getRoomInfo('tombstones') != 0)) {
+      let body = this.calcBody('harvester');
+      let newName = 'Harvester' + Game.time;
+      this.spawnCreep(body, newName, {memory: {role:'harvester',building:false}});
+      return 1;
+    }
   }
-  if (getRoomInfo('droppedResources') != 0) {
-    //Pick up dropped resources
-  }
-  if (getRoomInfo('tombstones') != 0) {
-    //Collect tombstones
-  }
-
+  return 'NOT NEEDED';
 }
 
 StructureSpawn.prototype.spawnRemoteHarvesterIfNeeded = function() {
@@ -124,10 +136,20 @@ StructureSpawn.prototype.spawnHaulerIfNeeded = function() {
 
 StructureSpawn.prototype.spawnUpgraderIfNeeded = function() {
   //Spawn conditions
+  if (true) {
+    let body = this.calcBody('upgrader');
+    let newName = 'Upgrader' + Game.time;
+    this.spawnCreep(body, newName, {memory: {role:'upgrader',building:false}});
+  }
 }
 
 StructureSpawn.prototype.spawnBuilderIfNeeded = function() {
   //Spawn conditions
+  if (true) {
+    let body = this.calcBody('builder');
+    let newName = 'Builder' + Game.time;
+    this.spawnCreep(body, newName, {memory: {role:'builder',building:false}});
+  }
 }
 
 StructureSpawn.prototype.spawnRepairerIfNeeded = function() {

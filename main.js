@@ -18,7 +18,7 @@ let roles = {
 
 //Load in prototypes
 require('prototype.creep');
-//require('prototype.spawn');
+require('prototype.spawn');
 require('prototype.tower');
 
 //Creep factory to spawn the creeps and auto builder
