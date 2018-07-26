@@ -2,16 +2,26 @@ var roleHauler = {
 
     /** @param {Creep} creep **/
     run: function(creep) {
+
+      //Identification
+      creep.say('Haul');
+
 	    if(creep.carry.energy < creep.carryCapacity) {
-            var sources = creep.room.find(FIND_STRUCTURES, {
-                    filter: (structure) => {
-                        return structure.structureType == STRUCTURE_CONTAINER &&
-                            structure.energy < structure.energyCapacity;
-                    }
-            });
-            if(creep.harvest(sources[0]) == ERR_NOT_IN_RANGE) {
+            var sources = creep.room.find(FIND_STRUCTURES, {filter: {structureType: STRUCTURE_CONTAINER}});
+
+            if (sources.length == 0) {
+              creep.say('Idling');
+              var flag = creep.room.find(FIND_FLAGS, {filter: {name: 'IdleLocation'}});
+              creep.moveTo(flag[0], {visualizePathStyle: {stroke: '#ffaa00'}});
+            }
+
+            if (sources[0].store[RESOURCE_ENERGY] == 0) {
+              sources[0] = sources[1];
+            }
+
+            if(creep.withdraw(sources[0], RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
                 creep.moveTo(sources[0], {visualizePathStyle: {stroke: '#ffaa00'}});
-                Game.spawns['Spawn1'].createConstructionSite(creep.pos.x, creep.pos.y, STRUCTURE_ROAD);
+                //Game.spawns['Spawn1'].createConstructionSite(creep.pos.x, creep.pos.y, STRUCTURE_ROAD);
             }
         }
         else {
