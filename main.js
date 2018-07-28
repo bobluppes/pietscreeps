@@ -1,3 +1,5 @@
+//test
+
 //Behaviour for different creep types
 let roles = {
   //Economy income
