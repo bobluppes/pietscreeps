@@ -1,7 +1,9 @@
 var autoBuilder = {
 
     run: function(){
-      if (Game.spawns['Spawn1'].room.controller.level == 2) {
+      if (Game.spawns['Spawn1'].room.controller.level == 1) {
+
+      } else if (Game.spawns['Spawn1'].room.controller.level == 2) {
         this.spawnExtensions('firstFive');
         this.spawnRoad();
       } else if (Game.spawns['Spawn1'].room.controller.level == 3) {
