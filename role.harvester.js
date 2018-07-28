@@ -1,39 +1,79 @@
-var roleHarvester = {
+const roleUpgrader = require('role.upgrader');
 
+const roleHarvester = {
     /** @param {Creep} creep **/
     run: function(creep) {
 
-      //Identification
-      creep.say('Har');
+        // let avgHits = creep.avgHits(STRUCTURE_WALL);
+        // console.log('bieb ' + avgHits);
 
-	    if(creep.carry.energy < creep.carryCapacity) {
-            var droppedEnergy = creep.room.find(FIND_DROPPED_RESOURCES);
-
-            if (droppedEnergy.length != 0) {
-              if (creep.pickup(droppedEnergy[0]) == ERR_NOT_IN_RANGE) {
-                creep.moveTo(droppedEnergy[0], {visualizePathStyle: {stroke: '#ffaa00'}});
-              }
-            } else {
-              var sources = creep.room.find(FIND_SOURCES);
-              if(creep.harvest(sources[0]) == ERR_NOT_IN_RANGE) {
-                  creep.moveTo(sources[0], {visualizePathStyle: {stroke: '#ffaa00'}});
-              }
-            }
+        //Identification
+        if (Game.time % 5 === 0) {
+            creep.say('🌾');
         }
-        else {
-            var targets = creep.room.find(FIND_STRUCTURES, {
-                    filter: (structure) => {
-                        return (structure.structureType == STRUCTURE_EXTENSION || structure.structureType == STRUCTURE_SPAWN || structure.structureType == STRUCTURE_TOWER) &&
-                            structure.energy < structure.energyCapacity;
-                    }
-            });
-            if(targets.length > 0) {
-                if(creep.transfer(targets[0], RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-                    creep.moveTo(targets[0], {visualizePathStyle: {stroke: '#ffffff'}});
+
+        if(creep.memory.full && creep.carry.energy === 0) {
+            creep.memory.full = false;
+            creep.say('🔄 get');
+        }
+        if(!creep.memory.full && creep.carry.energy === creep.carryCapacity) {
+            creep.memory.full = true;
+            creep.say('💯');
+        }
+
+        if(creep.memory.full) {
+            // let priority = ['spawn', 'extension', 'container', ]
+            let targets = creep.room.find(FIND_MY_STRUCTURES, {
+                filter: (s) => {
+                    return (
+                        ((s.structureType === STRUCTURE_SPAWN || s.structureType === STRUCTURE_EXTENSION || s.structureType === STRUCTURE_TOWER)
+                            && s.energy < s.energyCapacity)
+                    );
                 }
+            });
+
+            for (let i = 0; i < targets.length; i++) {
+                // console.log('targett: ' + targets[target].structureType);
+                if (targets[i].energy < targets[i].energyCapacity) {
+                    switch (targets[i].structureType) {
+                        case 'spawn':
+                            targets[i].priority = 1;
+                            // console.log('extension');
+                            break;
+                        case 'extension':
+                            targets[i].priority = 2;
+                            break;
+                        case 'tower':
+                            targets[i].priority = 3;
+                            break;
+                    }
+                }
+                // console.log('target: ' + targets[i] + ' | type: ' + targets[i].structureType + ' | priority: ' + targets[i].priority);
+            }
+
+            //SORT BY PRIORITY
+            targets.sort(function (a, b) {
+                return a.priority - b.priority
+            });
+
+            //MOVE TO TARGET
+            if(targets.length) {
+                // console.log('typeOf ' + typeof targets + ' : ' + targets);
+                let target = creep.pos.findClosestByPath(targets.slice(0,2)); // kies the closest target
+                // console.log('target ' + target + ' targets ' + targets);
+                // console.log(creep.name + 'target: ' + target + ' | type: ' + target.structureType + ' | priority: ' + target.priority);
+                if(creep.transfer(target, RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
+                    creep.moveTo(target, {visualizePathStyle: {stroke: '#0000ff'}});
+                }
+            } else {
+                roleUpgrader.run(creep);
             }
         }
-	}
+        if (!creep.memory.full) {
+            // creep.say('haul.gE');
+            creep.getEnergy(true, true);
+        }
+    }
 };
 
 module.exports = roleHarvester;

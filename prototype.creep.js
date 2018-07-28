@@ -1,3 +1,65 @@
+/** @function
+ @param {boolean} useContainer
+ @param {boolean} useSource */
+Creep.prototype.getEnergy =
+    function (useContainer, useSource) {
+        /** @type {StructureContainer} */
+        let container;
+        if (useContainer) {
+            switch (this.memory.role) {
+                case 'hauler':
+                    container = this.pos.findClosestByPath(FIND_STRUCTURES, {
+                        filter: s => (s.structureType === STRUCTURE_CONTAINER
+                            && s.store[RESOURCE_ENERGY] > 600)
+                    });
+                    //this.say('hauler');
+                    break;
+                default:
+                    container = this.pos.findClosestByPath(FIND_STRUCTURES, {
+                        filter: s => ((s.structureType === STRUCTURE_CONTAINER || s.structureType === STRUCTURE_STORAGE)
+                            && s.store[RESOURCE_ENERGY] > 0)
+                    });
+                    // this.say('def');
+                    break;
+            }
+            // console.log('gE.' + this.memory.role + ':' + container);
+            if (container !== undefined) {
+                if (this.withdraw(container, RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
+                    this.moveTo(container, {visualizePathStyle: {stroke: '#0bff00'}});
+                }
+            }
+        }
+        //FINALLY SOURCES
+        if (container == undefined && useSource) {
+            var source = this.pos.findClosestByPath(FIND_SOURCES_ACTIVE);
+            // console.log('getEnergy source: ' + source);
+            if (this.harvest(source) === ERR_NOT_IN_RANGE) {
+                this.moveTo(source, {visualizePathStyle: {stroke: '#00ff23'}});
+            }
+        }
+    };
+
+/** @function
+ @param {string} structureType
+ */
+Creep.prototype.avgHits =
+    function (structureType) {
+
+        let hitsTot = 0;
+        let structures = this.room.find(FIND_STRUCTURES, {
+            filter: (s) => (s.structureType === structureType)
+        });
+        // console.log('found ' + structures);
+        for(let structure in structures) {
+            // console.log('la ' + structures[structure].hits);
+            hitsTot += structures[structure].hits
+        }
+        return hitsTot/structures.length
+    };
+
+
+// BOBSHITE
+
 //Harvest the source with the source id saved in memory
 //Creep -> memory -> source -> [#id]
 //When full, drop all energy into nearby container
