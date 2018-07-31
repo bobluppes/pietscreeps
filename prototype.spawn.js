@@ -19,7 +19,7 @@ StructureSpawn.prototype.createMinerCreep =
         // Game.spawns['Spawn1'].spawnCreep([WORK,WORK,WORK,WORK,WORK,MOVE], newName,{memory: {role: 'miner'}});
         // Game.spawns['Spawn1'].spawnCreep([WORK,CARRY,MOVE],'jezus' ,{memory: {role: 'harvester'}});
 
-        let numberOfParts = Math.min(Math.floor((energy - 50) / 100), 5);
+        let numberOfParts = Math.min(Math.floor((energy - 50) / 100), 3);
         let body = [];
 
         //MAX WORK PARTS
