@@ -59,7 +59,7 @@ StructureSpawn.prototype.createBalancedCreep =
         // CREATE A BALANCED BODY AS BIG AS POSSIBLE WITH THE GIVEN ENERGY
         let newName = 'B' + roleName + Game.time;
         console.log('Spawning balanced: ' + newName);
-        let numberOfParts = Math.floor(energy / 200);
+        let numberOfParts = Math.min(Math.floor(energy / 200),4);
         let body = [];
         for (let i = 0; i < numberOfParts; i++) {
             body.push(WORK);
