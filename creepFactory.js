@@ -11,6 +11,7 @@ let creepFactory = {
         let miners = _.filter(Game.creeps, (creep) => creep.memory.role === 'miner');
         let haulers = _.filter(Game.creeps, (creep) => creep.memory.role === 'hauler');
         let wallers = _.filter(Game.creeps, (creep) => creep.memory.role === 'waller');
+        let remoteHarvesters = _.filter(Game.creeps, (creep) => creep.memory.role === 'remoteHarvester');
 
         //SETTINGS DEPENDING ON GAME STAGE
         let room = Game.spawns['Spawn1'].room;
@@ -42,6 +43,9 @@ let creepFactory = {
         }
         else if(wallers.length < 2 && room.energyAvailable > MinEnergyToSpawn) {
             Game.spawns['Spawn1'].createBalancedCreep(room.energyAvailable, 'waller');
+        }
+        else if(remoteHarvesters.length < 1 && room.energyAvailable > MinEnergyToSpawn) {
+            Game.spawns['Spawn1'].createBalancedCreep(room.energyAvailable, 'remoteHarvester');
         }
 
         if(Game.spawns['Spawn1'].spawning) {

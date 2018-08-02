@@ -83,19 +83,19 @@ Creep.prototype.harvestOwnSource = function(creep) {
 //Pop a container next to the source to dump energy
 Creep.prototype.popContainer = function(creep) {
   if (creep.pos.findInRange(FIND_CONSTRUCTION_SITES, 2, {filter: {structureType: STRUCTURE_CONTAINER}}).length == 0) {
-      if (creep.room.createConstructionSite(creep.pos, STRUCTURE_CONTAINER) == -7) {
-        var obstruction = creep.pos.findInRange(FIND_CONSTRUCTION_SITES, 1);
+      if (creep.room.createConstructionSite(creep.pos, STRUCTURE_CONTAINER) === ERR_INVALID_TARGET) {
+        let obstruction = creep.pos.findInRange(FIND_CONSTRUCTION_SITES, 1);
         if (obstruction.length == 0) {
           obstruction = creep.pos.findInRange(FIND_STRUCTURES, 1);
         }
-        obstruction.destroy();
+        obstruction[0].destroy();
       }
   }
-  var container = creep.pos.findInRange(FIND_CONSTRUCTION_SITES, 2, {filter: {structureType: STRUCTURE_CONTAINER}});
+  let container = creep.pos.findInRange(FIND_CONSTRUCTION_SITES, 2, {filter: {structureType: STRUCTURE_CONTAINER}});
   if (creep.build(container[0]) == -7) {
       creep.move(LEFT);
   }
-}
+};
 
 //Harvest any given source object
 Creep.prototype.harvestSource = function(creep, source) {

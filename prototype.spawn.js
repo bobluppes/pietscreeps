@@ -19,7 +19,7 @@ StructureSpawn.prototype.createMinerCreep =
         // Game.spawns['Spawn1'].spawnCreep([WORK,WORK,WORK,WORK,WORK,MOVE], newName,{memory: {role: 'miner'}});
         // Game.spawns['Spawn1'].spawnCreep([WORK,CARRY,MOVE],'jezus' ,{memory: {role: 'harvester'}});
 
-        let numberOfParts = Math.min(Math.floor((energy - 50) / 100), 5);
+        let numberOfParts = Math.min(Math.floor((energy - 50) / 100), 3);
         let body = [];
 
         //MAX WORK PARTS
@@ -59,7 +59,7 @@ StructureSpawn.prototype.createBalancedCreep =
         // CREATE A BALANCED BODY AS BIG AS POSSIBLE WITH THE GIVEN ENERGY
         let newName = 'B' + roleName + Game.time;
         console.log('Spawning balanced: ' + newName);
-        let numberOfParts = Math.floor(energy / 200);
+        let numberOfParts = Math.min(Math.floor(energy / 200),4);
         let body = [];
         for (let i = 0; i < numberOfParts; i++) {
             body.push(WORK);
