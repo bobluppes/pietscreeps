@@ -38,7 +38,7 @@ StructureSpawn.prototype.createHaulerCreep =
         let newName = 'Hauler' + Game.time;
         console.log('Spawning new hauler: ' + newName);
 
-        let numberOfParts = Math.min(Math.floor(energy/100), 5);
+        let numberOfParts = Math.min(Math.floor(energy/100), 7);
         let body = [];
 
         //MAX WORK PARTS

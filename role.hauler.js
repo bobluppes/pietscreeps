@@ -74,7 +74,7 @@ const roleHauler = {
         if (!creep.memory.full) {
             let droppedEnergy = creep.room.find(FIND_DROPPED_RESOURCES, {
                 filter: (drop) => {
-                    return (drop.resourceType === RESOURCE_ENERGY && drop.amount > 100)
+                    return (drop.resourceType === RESOURCE_ENERGY && drop.amount > 50)
                 }
             });
             // PICKUP DROPPED ENERGY FIRST
