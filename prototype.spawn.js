@@ -38,7 +38,7 @@ StructureSpawn.prototype.createHaulerCreep =
         let newName = 'Hauler' + Game.time;
         console.log('Spawning new hauler: ' + newName);
 
-        let numberOfParts = Math.min(Math.floor(energy/100), 7);
+        let numberOfParts = Math.min(Math.floor(energy/100), 5);
         let body = [];
 
         //MAX WORK PARTS
@@ -59,7 +59,7 @@ StructureSpawn.prototype.createBalancedCreep =
         // CREATE A BALANCED BODY AS BIG AS POSSIBLE WITH THE GIVEN ENERGY
         let newName = 'B' + roleName + Game.time;
         console.log('Spawning balanced: ' + newName);
-        let numberOfParts = Math.min(Math.floor(energy / 200),4);
+        let numberOfParts = Math.min(Math.floor(energy / 200), 5);
         let body = [];
         for (let i = 0; i < numberOfParts; i++) {
             body.push(WORK);

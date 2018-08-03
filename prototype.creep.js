@@ -81,6 +81,7 @@ Creep.prototype.harvestOwnSource = function(creep) {
 }
 
 //Pop a container next to the source to dump energy
+//HEB HIER MET CAS EVEN AAN ZITTEN KLOOIEN MAAR BEETJE VAAG
 Creep.prototype.popContainer = function(creep) {
   if (creep.pos.findInRange(FIND_CONSTRUCTION_SITES, 2, {filter: {structureType: STRUCTURE_CONTAINER}}).length == 0) {
       if (creep.room.createConstructionSite(creep.pos, STRUCTURE_CONTAINER) === ERR_INVALID_TARGET) {
