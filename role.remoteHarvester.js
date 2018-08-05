@@ -8,7 +8,7 @@ const roleRemoteHarvester = {
         creep.memory.home = Game.spawns['Spawn1'].room.name;
         creep.memory.sourceIndex = [0];
         let flag = Game.flags['remoteHarvest1'];
-        console.log('target rH: ' + flag + ", " + flag.name);
+        // console.log('target rH: ' + flag + ", " + flag.name);
         if (flag && !creep.memory.target) {
             creep.memory.target = flag.name;
         }
@@ -44,11 +44,11 @@ const roleRemoteHarvester = {
             let flagName = creep.memory.target;
             if (flagName) {
                 let targetFlag = Game.flags[flagName];
-                console.log(flagName + ", " + targetFlag);
+                // console.log(flagName + ", " + targetFlag);
                 if (targetFlag && creep.room !== targetFlag.room) {
                     creep.moveTo(targetFlag);
                 } else {
-                    creep.getEnergy(false, true);
+                    creep.getEnergy(false, false, true);
                 }
             }
         }

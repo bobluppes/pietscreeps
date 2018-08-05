@@ -74,7 +74,7 @@ const roleRepairer = {
             }
         } else {
             // creep.say('+.gE');
-            creep.getEnergy(true, true);
+            creep.getEnergy(true, true, true);
         }
 
     }

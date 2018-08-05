@@ -29,7 +29,7 @@ let creepFactory = {
         else if(upgraders.length < 3 && room.energyAvailable > MinEnergyToSpawn) {
             Game.spawns['Spawn1'].createBalancedCreep(room.energyAvailable, 'upgrader');
         }
-        else if(builders.length < 3 && room.energyAvailable > MinEnergyToSpawn) {
+        else if(builders.length < 2 && room.energyAvailable > MinEnergyToSpawn) {
             Game.spawns['Spawn1'].createBalancedCreep(room.energyAvailable, 'builder');
         }
         else if(repairers.length < 1 && room.energyAvailable > MinEnergyToSpawn) {
@@ -44,7 +44,7 @@ let creepFactory = {
         else if(wallers.length < 2 && room.energyAvailable > MinEnergyToSpawn) {
             Game.spawns['Spawn1'].createBalancedCreep(room.energyAvailable, 'waller');
         }
-        else if(remoteHarvesters.length < 1 && room.energyAvailable > MinEnergyToSpawn) {
+        else if(remoteHarvesters.length < 2 && room.energyAvailable > MinEnergyToSpawn) {
             Game.spawns['Spawn1'].createBalancedCreep(room.energyAvailable, 'remoteHarvester');
         }
 
