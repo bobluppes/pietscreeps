@@ -86,7 +86,7 @@ const roleHauler = {
                 //THEN COME CONTAINERS
             } else {
             // creep.say('haul.gE');
-            creep.getEnergy(true, false);
+            creep.getEnergy(false, true, false);
             }
         }
     }

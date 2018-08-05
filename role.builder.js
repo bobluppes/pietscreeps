@@ -66,7 +66,7 @@ const roleBuilder = {
             }
         } else {
             // creep.say('b.gE');
-            creep.getEnergy(false, true);
+            creep.getEnergy(true, false, true);
         }
     }
 };

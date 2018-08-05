@@ -1,11 +1,25 @@
 /** @function
+ @param {boolean} useStorage
  @param {boolean} useContainer
  @param {boolean} useSource */
 Creep.prototype.getEnergy =
-    function (useContainer, useSource) {
+    function (useStorage, useContainer, useSource) {
         /** @type {StructureContainer} */
         let container;
-        if (useContainer) {
+        let storage;
+        if (useStorage) {
+            storage = this.pos.findClosestByPath(FIND_STRUCTURES, {
+                filter: s => ( s.structureType === STRUCTURE_STORAGE
+                    && s.store[RESOURCE_ENERGY] > 0)
+            });
+
+            if (storage !== undefined) {
+                if (this.withdraw(storage, RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
+                    this.moveTo(storage, {visualizePathStyle: {stroke: '#0bff00'}});
+                }
+            }
+        }
+        if (storage == undefined && useContainer) {
             switch (this.memory.role) {
                 case 'hauler':
                     container = this.pos.findClosestByPath(FIND_STRUCTURES, {
@@ -16,7 +30,7 @@ Creep.prototype.getEnergy =
                     break;
                 default:
                     container = this.pos.findClosestByPath(FIND_STRUCTURES, {
-                        filter: s => ((s.structureType === STRUCTURE_CONTAINER || s.structureType === STRUCTURE_STORAGE)
+                        filter: s => (s.structureType === STRUCTURE_CONTAINER
                             && s.store[RESOURCE_ENERGY] > 0)
                     });
                     // this.say('def');
@@ -31,7 +45,7 @@ Creep.prototype.getEnergy =
         }
         //FINALLY SOURCES
         if (container == undefined && useSource) {
-            var source = this.pos.findClosestByPath(FIND_SOURCES_ACTIVE);
+            let source = this.pos.findClosestByPath(FIND_SOURCES_ACTIVE);
             // console.log('getEnergy source: ' + source);
             if (this.harvest(source) === ERR_NOT_IN_RANGE) {
                 this.moveTo(source, {visualizePathStyle: {stroke: '#00ff23'}});

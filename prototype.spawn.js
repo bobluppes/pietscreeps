@@ -56,6 +56,7 @@ StructureSpawn.prototype.createHaulerCreep =
 
 StructureSpawn.prototype.createBalancedCreep =
     function (energy, roleName) {
+
         // CREATE A BALANCED BODY AS BIG AS POSSIBLE WITH THE GIVEN ENERGY
         let newName = 'B' + roleName + Game.time;
         console.log('Spawning balanced: ' + newName);
@@ -64,14 +65,14 @@ StructureSpawn.prototype.createBalancedCreep =
         for (let i = 0; i < numberOfParts; i++) {
             body.push(WORK);
         }
-        for (let i = 0; i < numberOfParts; i++) {
+        for (let i = 0; i < 2 * numberOfParts; i++) {
             body.push(CARRY);
         }
-        for (let i = 0; i < numberOfParts; i++) {
+        for (let i = 0; i < 2 * numberOfParts; i++) {
             body.push(MOVE);
         }
         // CREATE CREEP WITH THE CREATED BODY AND THE GIVEN ROLE
-        return this.createCreep(body, newName, { role: roleName, full: false });
+        return this.createCreep(body, newName, { role: roleName, full: false, home: this.room.name });
     };
 
 //BOBSHITE
