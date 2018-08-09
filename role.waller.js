@@ -37,7 +37,7 @@ const roleWaller = {
                     target = targets[i];
                 }
             }
-            console.log('waller target: ' + target + ' | type: ' + target.structureType + ' | hp: ' + hp);
+            // console.log('waller target: ' + target + ' | type: ' + target.structureType + ' | hp: ' + hp);
 
             //MOVE TO TARGET
             if (target) {
