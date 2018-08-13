@@ -55,7 +55,7 @@ StructureSpawn.prototype.createRemoteHarvesterCreep =
 
         //WORK PARTS
         for (let i = 0; i < numberOfParts; i++) {
-            body.push(MOVE);
+            body.push(WORK);
         }
         // CARRY PARTS
         for (let i = 0; i < numberOfParts; i++) {
