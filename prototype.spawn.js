@@ -41,7 +41,7 @@ StructureSpawn.prototype.createHaulerCreep =
         }
 
         // CREATE CREEP WITH THE CREATED BODY AND THE GIVEN ROLE
-        return this.spawnCreep(body, newName, {memory: {role: 'hauler', full: false}});
+        return this.spawnCreep(body, newName, {memory: {role: 'hauler', full: false, home: this.room.name}});
     };
 
 StructureSpawn.prototype.createRemoteHarvesterCreep =
@@ -67,7 +67,7 @@ StructureSpawn.prototype.createRemoteHarvesterCreep =
         }
 
         // CREATE CREEP WITH THE CREATED BODY AND THE GIVEN ROLE
-        return this.spawnCreep(body, newName, {memory: {role: 'remoteHarvester', full: false}});
+        return this.spawnCreep(body, newName, {memory: {role: 'remoteHarvester', full: false, home: this.room.name}});
     };
 
 StructureSpawn.prototype.createBalancedCreep =

@@ -22,7 +22,7 @@ const roleWaller = {
             let targets = creep.room.find(FIND_STRUCTURES, {
                 filter: (s) => {
                     return (
-                        (s.structureType === STRUCTURE_RAMPART && s.hits < creep.avgHits() + 5)
+                        (s.structureType === STRUCTURE_RAMPART && s.hits < creep.avgHits(STRUCTURE_RAMPART) + 5)
                         || (s.structureType === STRUCTURE_WALL && s.hits < creep.avgHits(STRUCTURE_WALL)+ 5)
                     )
                 }
