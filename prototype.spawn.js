@@ -1,3 +1,34 @@
+StructureSpawn.prototype.createBalancedCreep =
+    function (energy, roleName) {
+
+        // IF CREEP IS FIRST OF ITS KIND BUILD IT SIMPLE
+        // ELSE: CREATE A BALANCED BODY AS BIG AS POSSIBLE BASED ON ENERGY CAPACITY
+        let newName = 'B' + roleName + Game.time;
+        console.log('Spawning balanced: ' + newName);
+        let firstOfItsKind = (_.filter(Game.creeps, (creep) => creep.memory.role === roleName).length === 0);
+        let body = [];
+
+        if (firstOfItsKind) {
+            body = [WORK, CARRY, MOVE];
+            console.log('Queen of the first ' + roleName);
+        } else {
+            let numberOfParts = Math.min(Math.floor(energy / 200), 5);
+            for (let i = 0; i < numberOfParts; i++) {
+                body.push(WORK);
+            }
+            for (let i = 0; i < numberOfParts; i++) {
+                body.push(CARRY);
+            }
+            for (let i = 0; i < numberOfParts; i++) {
+                body.push(MOVE);
+            }
+        }
+
+        // CREATE CREEP WITH THE CREATED BODY AND THE GIVEN ROLE
+        return this.spawnCreep(body, newName, {memory: {role: roleName, full: false, home: this.room.name }});
+    };
+
+
 StructureSpawn.prototype.createMinerCreep =
     function () {
         //BUILD A MINER WITH 5 WORK AND 1 MOVE PART
@@ -70,35 +101,7 @@ StructureSpawn.prototype.createRemoteHarvesterCreep =
         return this.spawnCreep(body, newName, {memory: {role: 'remoteHarvester', full: false, home: this.room.name}});
     };
 
-StructureSpawn.prototype.createBalancedCreep =
-    function (energy, roleName) {
 
-        // IF CREEP IS FIRST OF ITS KIND BUILD IT SIMPLE
-        // ELSE: CREATE A BALANCED BODY AS BIG AS POSSIBLE BASED ON ENERGY CAPACITY
-        let newName = 'B' + roleName + Game.time;
-        console.log('Spawning balanced: ' + newName);
-        let firstOfItsKind = (_.filter(Game.creeps, (creep) => creep.memory.role === 'rolename').length === 0);
-        let body = [];
-
-        if (firstOfItsKind) {
-            body = [WORK, CARRY, MOVE];
-            console.log('Queen of the first ' + roleName);
-        } else {
-            let numberOfParts = Math.min(Math.floor(energy / 200), 5);
-            for (let i = 0; i < numberOfParts; i++) {
-                body.push(WORK);
-            }
-            for (let i = 0; i < numberOfParts; i++) {
-                body.push(CARRY);
-            }
-            for (let i = 0; i < numberOfParts; i++) {
-                body.push(MOVE);
-            }
-        }
-
-        // CREATE CREEP WITH THE CREATED BODY AND THE GIVEN ROLE
-        return this.spawnCreep(body, newName, {memory: {role: roleName, full: false, home: this.room.name }});
-    };
 
 //BOBSHITE
 
