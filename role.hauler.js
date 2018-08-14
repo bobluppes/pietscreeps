@@ -59,15 +59,23 @@ const roleHauler = {
                 }
                 // console.log('target: ' + targets[i] + ' | type: ' + targets[i].structureType + ' | priority: ' + targets[i].priority);
             }
+
+            //console.log('func: ' + targets.prioritize());
             //sort by priority
             targets.sort(function (a, b) {
                 return a.priority - b.priority
             });
 
+
+            //FIND CLOSEST INSTANCE OF HIGHEST PRIORITY STRUCTURETYPE
+            targets = _.filter(targets, (t) => t.structureType === targets[0].structureType);
+            let target = creep.pos.findClosestByPath(targets);
+
+            console.log('target: ' + target + ' |targets: ' + targets);
             //TRANSFER
             if(targets.length > 0) {
-                if(creep.transfer(targets[0], RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
-                    creep.moveTo(targets[0], {visualizePathStyle: {stroke: '#ff0009'}});
+                if(creep.transfer(target, RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
+                    creep.moveTo(target, {visualizePathStyle: {stroke: '#ff0009'}});
                 }
             } else {
                 roleUpgrader.run(creep);

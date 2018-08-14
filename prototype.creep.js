@@ -71,6 +71,17 @@ Creep.prototype.avgHits =
         return hitsTot/structures.length
     };
 
+/** @function
+ @param {array} targets
+ */
+Creep.prototype.prioritize =
+    function (targets) {
+
+        targets.sort(function (a, b) {
+            return a.priority - b.priority
+        });
+    };
+
 
 // BOBSHITE
 
