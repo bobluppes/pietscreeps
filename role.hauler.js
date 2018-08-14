@@ -4,6 +4,8 @@ const roleHauler = {
     /** @param {Creep} creep **/
     run: function(creep) {
 
+        // creep.memory.home = Game.creeps[creep.name].room.name;
+
         //Identification
         if (Game.time % 5 === 0) {
             creep.say('🚛');

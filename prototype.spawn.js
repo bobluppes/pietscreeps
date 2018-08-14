@@ -1,6 +1,38 @@
-StructureSpawn.prototype.createMinerCreep =
-    function (energy) {
+StructureSpawn.prototype.createBalancedCreep =
+    function (energy, roleName) {
 
+        // IF CREEP IS FIRST OF ITS KIND BUILD IT SIMPLE
+        // ELSE: CREATE A BALANCED BODY AS BIG AS POSSIBLE BASED ON ENERGY CAPACITY
+        let newName = 'B' + roleName + Game.time;
+        console.log('Spawning balanced: ' + newName);
+        let firstOfItsKind = (_.filter(Game.creeps, (creep) => creep.memory.role === roleName).length === 0);
+        let body = [];
+
+        if (firstOfItsKind) {
+            body = [WORK, CARRY, MOVE];
+            console.log('Queen of the first ' + roleName);
+        } else {
+            let numberOfParts = Math.min(Math.floor(energy / 200), 5);
+            for (let i = 0; i < numberOfParts; i++) {
+                body.push(WORK);
+            }
+            for (let i = 0; i < numberOfParts; i++) {
+                body.push(CARRY);
+            }
+            for (let i = 0; i < numberOfParts; i++) {
+                body.push(MOVE);
+            }
+        }
+
+        // CREATE CREEP WITH THE CREATED BODY AND THE GIVEN ROLE
+        return this.spawnCreep(body, newName, {memory: {role: roleName, full: false, home: this.room.name }});
+    };
+
+
+StructureSpawn.prototype.createMinerCreep =
+    function () {
+        //BUILD A MINER WITH 5 WORK AND 1 MOVE PART
+        //THIS CONFIGURATION WILL DRAIN A SOURCE WITHIN THE RESPAWN TIME
         assignSource = function () {
             let sources = Game.spawns['Spawn1'].room.find(FIND_SOURCES);
             console.log(sources);
@@ -12,25 +44,14 @@ StructureSpawn.prototype.createMinerCreep =
             }
         };
         let assignedSource = assignSource();
-        console.log(assignedSource);
+        // console.log(assignedSource);
 
         let newName = 'Miner' + Game.time;
         console.log('Spawning new miner: ' + newName);
-        // Game.spawns['Spawn1'].spawnCreep([WORK,WORK,WORK,WORK,WORK,MOVE], newName,{memory: {role: 'miner'}});
-        // Game.spawns['Spawn1'].spawnCreep([WORK,CARRY,MOVE],'jezus' ,{memory: {role: 'harvester'}});
-
-        let numberOfParts = Math.min(Math.floor((energy - 50) / 100), 3);
-        let body = [];
-
-        //MAX WORK PARTS
-        for (let i = 0; i < numberOfParts; i++) {
-            body.push(WORK);
-        }
-        // 1 MOVE PART
-        body.push(MOVE);
+        let body = [WORK, WORK, WORK, WORK, WORK, MOVE];
 
         // CREATE CREEP WITH THE CREATED BODY AND THE GIVEN ROLE
-        return this.createCreep(body, newName, {role: 'miner', full: false, source: assignedSource});
+        return this.spawnCreep(body, newName, {memory: {role: 'miner', full: false, source: assignedSource}});
     };
 
 StructureSpawn.prototype.createHaulerCreep =
@@ -51,29 +72,36 @@ StructureSpawn.prototype.createHaulerCreep =
         }
 
         // CREATE CREEP WITH THE CREATED BODY AND THE GIVEN ROLE
-        return this.createCreep(body, newName, {role: 'hauler', full: false});
+        return this.spawnCreep(body, newName, {memory: {role: 'hauler', full: false, home: this.room.name}});
     };
 
-StructureSpawn.prototype.createBalancedCreep =
-    function (energy, roleName) {
+StructureSpawn.prototype.createRemoteHarvesterCreep =
+    //TODO OPLSPLITSEN IN REMOTEMINER EN REMOTEHAULER
+    function (energy) {
+        let newName = 'RemoteHarvester' + Game.time;
+        console.log('Spawning new RemoteHarvester: ' + newName);
 
-        // CREATE A BALANCED BODY AS BIG AS POSSIBLE WITH THE GIVEN ENERGY
-        let newName = 'B' + roleName + Game.time;
-        console.log('Spawning balanced: ' + newName);
-        let numberOfParts = Math.min(Math.floor(energy / 200), 5);
+        let numberOfParts = Math.max(Math.floor(energy/200), 6);
         let body = [];
+
+        //WORK PARTS
         for (let i = 0; i < numberOfParts; i++) {
             body.push(WORK);
         }
-        for (let i = 0; i < 2 * numberOfParts; i++) {
+        // CARRY PARTS
+        for (let i = 0; i < numberOfParts; i++) {
             body.push(CARRY);
         }
-        for (let i = 0; i < 2 * numberOfParts; i++) {
+        // MOVE PARTS
+        for (let i = 0; i < numberOfParts; i++) {
             body.push(MOVE);
         }
+
         // CREATE CREEP WITH THE CREATED BODY AND THE GIVEN ROLE
-        return this.createCreep(body, newName, { role: roleName, full: false, home: this.room.name });
+        return this.spawnCreep(body, newName, {memory: {role: 'remoteHarvester', full: false, home: this.room.name}});
     };
+
+
 
 //BOBSHITE
 

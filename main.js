@@ -33,6 +33,8 @@ module.exports.loop = function () {
     //Test
     //Game.spawns['Spawn1'].spawnHarvesterIfNeeded();
 
+    console.log(roles.harvester.balzak);
+
     //AutoBuilder
     autoBuilder.run();
 
