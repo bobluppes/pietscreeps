@@ -36,11 +36,11 @@ module.exports.loop = function () {
     //Test
     //Game.spawns['Spawn1'].spawnHarvesterIfNeeded();
 
+    //
+    // let boop = global.draaiOm(['a', 'b', 'c', 'd']);
+    // global.test(boop);
 
-    let boop = global.draaiOm(['a', 'b', 'c', 'd']);
-    global.test(boop);
-
-    console.log(roles.harvester.balzak);
+    // console.log(roles.harvester.balzak);
 
     //AutoBuilder
     autoBuilder.run();

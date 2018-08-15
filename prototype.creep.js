@@ -71,15 +71,12 @@ Creep.prototype.avgHits =
         return hitsTot/structures.length
     };
 
-/** @function
- @param {array} targets
- */
-Creep.prototype.prioritize =
-    function (targets) {
 
-        targets.sort(function (a, b) {
-            return a.priority - b.priority
-        });
+Creep.prototype.identify =
+    function () {
+        if (Game.time % 5 === 0) {
+            creep.say(creep.memory.roleName);
+        }
     };
 
 
