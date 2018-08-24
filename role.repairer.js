@@ -60,7 +60,7 @@ const roleRepairer = {
             targets.sort(function (a, b) {
                 return a.priority - b.priority
             });
-            console.log('beep' + targets);
+            //console.log('beep' + targets);
             //MOVE TO TARGET
             if (targets.length) {
                 let target = creep.pos.findClosestByPath(targets.slice(0,3));

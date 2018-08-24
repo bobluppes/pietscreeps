@@ -23,6 +23,9 @@ require('prototype.creep');
 require('prototype.spawn');
 require('prototype.tower');
 
+//CUSTOM FUNCTIONS
+require('functions.game');
+
 //Creep factory to spawn the creeps and auto builder
 let creepFactory = require('creepFactory');
 let logger = require('logger');
@@ -33,7 +36,11 @@ module.exports.loop = function () {
     //Test
     //Game.spawns['Spawn1'].spawnHarvesterIfNeeded();
 
-    console.log(roles.harvester.balzak);
+    //
+    // let boop = global.draaiOm(['a', 'b', 'c', 'd']);
+    // global.test(boop);
+
+    // console.log(roles.harvester.balzak);
 
     //AutoBuilder
     autoBuilder.run();

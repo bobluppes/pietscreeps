@@ -72,6 +72,14 @@ Creep.prototype.avgHits =
     };
 
 
+Creep.prototype.identify =
+    function () {
+        if (Game.time % 5 === 0) {
+            creep.say(creep.memory.roleName);
+        }
+    };
+
+
 // BOBSHITE
 
 //Harvest the source with the source id saved in memory
