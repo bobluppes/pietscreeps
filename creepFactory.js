@@ -1,5 +1,4 @@
 let creepFactory = {
-    /** @param {Creep} creep **/
     run: function() {
 
         //screep population checking

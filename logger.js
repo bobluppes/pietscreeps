@@ -27,8 +27,6 @@ let logger = {
             //PROBEER VARIABELEN UIT ROLE MODULES HIER TE LOGGEN
             //console.log('waller target: ' + waller.log.target + ' | type: ' + waller.log.target.structureType + ' | hp: ' + waller.log.hp);
         }
-
-
     }
 };
 

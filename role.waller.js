@@ -29,7 +29,7 @@ const roleWaller = {
             });
             let hp = Infinity;
             let target = false;
-            console.log('avg wall hits: ' + creep.avgHits(STRUCTURE_WALL) + ' wall targets: ' + targets);
+            // console.log('avg wall hits: ' + creep.avgHits(STRUCTURE_WALL) + ' wall targets: ' + targets);
             for (let i = 0; i < targets.length; i++) {
                 // console.log(targets[i]);
                 if (targets[i].hits < hp) {

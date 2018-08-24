@@ -71,7 +71,7 @@ const roleHauler = {
             targets = _.filter(targets, (t) => t.structureType === targets[0].structureType);
             let target = creep.pos.findClosestByPath(targets);
 
-            console.log('target: ' + target + ' |targets: ' + targets);
+            // console.log('target: ' + target + ' |targets: ' + targets);
             //TRANSFER
             if(targets.length > 0) {
                 if(creep.transfer(target, RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
@@ -89,7 +89,7 @@ const roleHauler = {
             });
             // PICKUP DROPPED ENERGY FIRST
             if(droppedEnergy.length > 0) {
-                console.log('dropped: ' + droppedEnergy);
+                // console.log('dropped: ' + droppedEnergy);
                 if (creep.pickup(droppedEnergy[0], RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
                     creep.moveTo(droppedEnergy[0], {visualizePathStyle: {stroke: '#ffffff'}});
                 }

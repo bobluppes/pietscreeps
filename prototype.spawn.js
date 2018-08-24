@@ -1,6 +1,5 @@
 StructureSpawn.prototype.createBalancedCreep =
     function (energy, roleName) {
-
         // IF CREEP IS FIRST OF ITS KIND BUILD IT SIMPLE
         // ELSE: CREATE A BALANCED BODY AS BIG AS POSSIBLE BASED ON ENERGY CAPACITY
         let newName = 'B' + roleName + Game.time;
@@ -76,7 +75,7 @@ StructureSpawn.prototype.createHaulerCreep =
     };
 
 StructureSpawn.prototype.createRemoteHarvesterCreep =
-    //TODO OPLSPLITSEN IN REMOTEMINER EN REMOTEHAULER
+    //TODO OPSPLITSEN IN REMOTEMINER EN REMOTEHAULER
     function (energy) {
         let newName = 'RemoteHarvester' + Game.time;
         console.log('Spawning new RemoteHarvester: ' + newName);
@@ -100,7 +99,6 @@ StructureSpawn.prototype.createRemoteHarvesterCreep =
         // CREATE CREEP WITH THE CREATED BODY AND THE GIVEN ROLE
         return this.spawnCreep(body, newName, {memory: {role: 'remoteHarvester', full: false, home: this.room.name}});
     };
-
 
 
 //BOBSHITE
