@@ -32,33 +32,39 @@ let logger = require('logger');
 let autoBuilder = require('autoBuilder');
 let cache = require('cache');
 
+//PROFILER
+const profiler = require('screeps-profiler');
+profiler.enable();
+
 module.exports.loop = function () {
-    //Test
-    //Game.spawns['Spawn1'].spawnHarvesterIfNeeded();
+    profiler.wrap(function() {
+        //Test
+        //Game.spawns['Spawn1'].spawnHarvesterIfNeeded();
 
-    //
-    // let boop = global.draaiOm(['a', 'b', 'c', 'd']);
-    // global.test(boop);
+        //
+        // let boop = global.draaiOm(['a', 'b', 'c', 'd']);
+        // global.test(boop);
 
-    // console.log(roles.harvester.balzak);
+        // console.log(roles.harvester.balzak);
 
-    //AutoBuilder
-    autoBuilder.run();
+        //AutoBuilder
+        autoBuilder.run();
 
-    //Create the creeps and log game data
-    creepFactory.run();
-    logger.run();
-    cache.run();
+        //Create the creeps and log game data
+        creepFactory.run();
+        logger.run();
+        cache.run();
 
-    //MAKING TOWERS WORK
-    let towers = _.filter(Game.structures, s => s.structureType === STRUCTURE_TOWER);
-    for (let tower of towers) {
-        tower.defend();
-    }
+        //MAKING TOWERS WORK
+        let towers = _.filter(Game.structures, s => s.structureType === STRUCTURE_TOWER);
+        for (let tower of towers) {
+            tower.defend();
+        }
 
-    //Creep behaviour
-    for (let name in Game.creeps) {
-      let creep = Game.creeps[name];
-      roles[creep.memory.role].run(creep);
-    }
-}
+        //Creep behaviour
+        for (let name in Game.creeps) {
+          let creep = Game.creeps[name];
+          roles[creep.memory.role].run(creep);
+        }
+    });
+};
