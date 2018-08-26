@@ -1,29 +1,34 @@
-var logger = {
-
+let logger = {
     /** @param {Creep} creep **/
-    run: function(miners) {
+    run: function() {
+        let harvesters = _.filter(Game.creeps, (creep) => creep.memory.role === 'harvester');
+        let upgraders = _.filter(Game.creeps, (creep) => creep.memory.role === 'upgrader');
+        let builders = _.filter(Game.creeps, (creep) => creep.memory.role === 'builder');
 
-      //Retrieve amount of creeps per role
-      var harvesters = _.filter(Game.creeps, (creep) => creep.memory.role == 'harvester');
-      var miners = _.filter(Game.creeps, (creep) => creep.memory.role == 'miner');
-      var haulers = _.filter(Game.creeps, (creep) => creep.memory.role == 'hauler');
-      var upgraders = _.filter(Game.creeps, (creep) => creep.memory.role == 'upgrader');
-      var builders = _.filter(Game.creeps, (creep) => creep.memory.role == 'builder');
-      var repairers = _.filter(Game.creeps, (creep) => creep.memory.role == 'repairer');
-
-      //Energy data
-      var energyAvailable = Game.spawns['Spawn1'].room.energyAvailable;
-      var energyCap = Game.spawns['Spawn1'].room.energyCapacityAvailable;
+        let repairers = _.filter(Game.creeps, (creep) => creep.memory.role === 'repairer');
+        let miners = _.filter(Game.creeps, (creep) => creep.memory.role === 'miner');
+        let haulers = _.filter(Game.creeps, (creep) => creep.memory.role === 'hauler');
+        let wallers = _.filter(Game.creeps, (creep) => creep.memory.role === 'waller');
+        let remoteHarvesters = _.filter(Game.creeps, (creep) => creep.memory.role === 'remoteHarvester');
 
 
-      console.log("Har: " + harvesters.length + " | Min: " + miners.length + " | Hau: " + haulers.length);
-      console.log("Upg: " + upgraders.length + " | Bui: " + builders.length + " | Rep: " + repairers.length);
-      console.log("Energy: " + energyAvailable + "/" + energyCap);
+        //ENERGY DATA
+        let energyAvailable = Game.spawns['Spawn1'].room.energyAvailable;
+        let energyCap = Game.spawns['Spawn1'].room.energyCapacityAvailable;
 
-      //Test
+        //SPECIFIC CREEP INFO
+        let waller = require('role.waller');
 
+        //CONSOLE LOGGING
+        for(let name in Game.rooms) {
+            console.log('>>Energy in room ' + name + ': ' + energyAvailable + "/" + energyCap);
+            console.log('>>Harvesters: ' + harvesters.length,' | Upgraders: ' + upgraders.length, ' | Builders: ' + builders.length,' | Repairers: ' + repairers.length,' | Miners: ' + miners.length,' | Haulers: ' + haulers.length,' | Wallers: ' + wallers.length, ' | remoteHarvesters: ' + remoteHarvesters.length);
 
+            //PROBEER VARIABELEN UIT ROLE MODULES HIER TE LOGGEN
+            //console.log('waller target: ' + waller.log.target + ' | type: ' + waller.log.target.structureType + ' | hp: ' + waller.log.hp);
+        }
     }
 };
+
 
 module.exports = logger;

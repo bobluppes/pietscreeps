@@ -1,5 +1,4 @@
 let creepFactory = {
-    /** @param {Creep} creep **/
     run: function() {
 
         //screep population checking
@@ -11,10 +10,11 @@ let creepFactory = {
         let miners = _.filter(Game.creeps, (creep) => creep.memory.role === 'miner');
         let haulers = _.filter(Game.creeps, (creep) => creep.memory.role === 'hauler');
         let wallers = _.filter(Game.creeps, (creep) => creep.memory.role === 'waller');
+        let remoteHarvesters = _.filter(Game.creeps, (creep) => creep.memory.role === 'remoteHarvester');
 
         //SETTINGS DEPENDING ON GAME STAGE
         let room = Game.spawns['Spawn1'].room;
-        let MinEnergyToSpawn = Math.min((room.energyCapacityAvailable - 100),550);
+        let MinEnergyToSpawn = Math.min((room.energyCapacityAvailable - 300),800);
 
         // //ENERGY DATA
         // var energyAvailable = Game.spawns['Spawn1'].room.energyAvailable;
@@ -28,20 +28,23 @@ let creepFactory = {
         else if(upgraders.length < 3 && room.energyAvailable > MinEnergyToSpawn) {
             Game.spawns['Spawn1'].createBalancedCreep(room.energyAvailable, 'upgrader');
         }
-        else if(builders.length < 3 && room.energyAvailable > MinEnergyToSpawn) {
+        else if(builders.length < 2 && room.energyAvailable > MinEnergyToSpawn) {
             Game.spawns['Spawn1'].createBalancedCreep(room.energyAvailable, 'builder');
         }
         else if(repairers.length < 1 && room.energyAvailable > MinEnergyToSpawn) {
             Game.spawns['Spawn1'].createBalancedCreep(room.energyAvailable, 'repairer');
         }
         else if(miners.length < 2 && room.energyAvailable > MinEnergyToSpawn) {
-            Game.spawns['Spawn1'].createMinerCreep(room.energyAvailable);
+            Game.spawns['Spawn1'].createMinerCreep();
         }
         else if(haulers.length < 2 && room.energyAvailable > MinEnergyToSpawn) {
             Game.spawns['Spawn1'].createHaulerCreep(room.energyAvailable);
         }
         else if(wallers.length < 2 && room.energyAvailable > MinEnergyToSpawn) {
             Game.spawns['Spawn1'].createBalancedCreep(room.energyAvailable, 'waller');
+        }
+        else if(remoteHarvesters.length < 3 && room.energyAvailable > MinEnergyToSpawn) {
+            Game.spawns['Spawn1'].createRemoteHarvesterCreep(room.energyAvailable);
         }
 
         if(Game.spawns['Spawn1'].spawning) {
@@ -74,7 +77,18 @@ module.exports = creepFactory;
 //           }
 //         }
 //       }
+//
 //     }
+//
 // };
 //
 // module.exports = creepFactory;
+
+// if(Game.spawns['Spawn1'].spawning) {
+//     let spawningCreep = Game.creeps[Game.spawns['Spawn1'].spawning.name];
+//     Game.spawns['Spawn1'].room.visual.text(
+//         '🛠️' + spawningCreep.memory.role,
+//         Game.spawns['Spawn1'].pos.x + 1,
+//         Game.spawns['Spawn1'].pos.y,
+//         {align: 'left', opacity: 0.8});
+// }

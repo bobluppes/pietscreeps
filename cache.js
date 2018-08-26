@@ -5,6 +5,7 @@ var cache = {
     for(var i in Memory.creeps) {
       if(!Game.creeps[i]) {
           delete Memory.creeps[i];
+          // console.log('Clearing non-existing creep memory:', name);
       }
     }
   }
