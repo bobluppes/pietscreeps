@@ -13,17 +13,20 @@ const roleWaller = {
         if(creep.memory.full && creep.carry.energy === 0) {
             creep.memory.full = false;
             creep.say('🔄 get');
+            creep.memory.target = false;
         }
         if(!creep.memory.full && creep.carry.energy === creep.carryCapacity) {
             creep.memory.full = true;
             creep.say('💯');
+            creep.memory.target = false;
         }
-        if(creep.memory.full) {
+
+        if (!creep.memory.target && creep.memory.full) {
             let targets = creep.room.find(FIND_STRUCTURES, {
                 filter: (s) => {
                     return (
                         (s.structureType === STRUCTURE_RAMPART && s.hits < creep.avgHits(STRUCTURE_RAMPART) + 5)
-                        || (s.structureType === STRUCTURE_WALL && s.hits < creep.avgHits(STRUCTURE_WALL)+ 5)
+                        || (s.structureType === STRUCTURE_WALL && s.hits < creep.avgHits(STRUCTURE_WALL) + 5)
                     )
                 }
             });
@@ -38,22 +41,20 @@ const roleWaller = {
                 }
             }
             // console.log('waller target: ' + target + ' | type: ' + target.structureType + ' | hp: ' + hp);
-
+            creep.memory.target = target.id;
             //MOVE TO TARGET
-            if (target) {
-                // console.log('rep: ' + target);
-                if (creep.repair(target) === ERR_NOT_IN_RANGE) {
-                    creep.moveTo(target, {visualizePathStyle: {stroke: '#000000'}});
-                }
-            } else {
-                roleUpgrader.run(creep);
-                creep.say('upg.rol');
+        }
+
+        if (creep.memory.target && creep.memory.full) {
+            // console.log('rep: ' + target);
+            let target = Game.getObjectById(creep.memory.target);
+            if (creep.repair(target) === ERR_NOT_IN_RANGE) {
+                creep.moveTo(target, {visualizePathStyle: {stroke: '#000000'}});
             }
         } else {
             // creep.say('+.gE');
             creep.getEnergy(true, true, false);
         }
-
     }
 };
 

@@ -71,7 +71,7 @@ const roleHarvester = {
         }
         if (!creep.memory.full) {
             // creep.say('haul.gE');
-            creep.getEnergy(false, true, true);
+            creep.getEnergy(true, true, true);
         }
     }
 };
