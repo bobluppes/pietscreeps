@@ -9,19 +9,25 @@ const roleWaller = {
         if (Game.time % 5 === 0) {
             creep.say('🛡️');
         }
-
-        if(creep.memory.full && creep.carry.energy === 0) {
+        //CHECK INVENTORY
+        if (creep.memory.full && creep.carry.energy === 0) {
             creep.memory.full = false;
             creep.say('🔄 get');
-            creep.memory.target = false;
         }
-        if(!creep.memory.full && creep.carry.energy === creep.carryCapacity) {
+        if (!creep.memory.full && creep.carry.energy === creep.carryCapacity) {
             creep.memory.full = true;
-            creep.say('💯');
             creep.memory.target = false;
+            creep.say('💯');
+
         }
 
-        if (!creep.memory.target && creep.memory.full) {
+        if (creep.memory.target && creep.memory.full) {
+            // console.log('rep: ' + target);
+            let target = Game.getObjectById(creep.memory.target);
+            if (creep.repair(target) === ERR_NOT_IN_RANGE) {
+                creep.moveTo(target, {visualizePathStyle: {stroke: '#000000'}});
+            }
+        } else if (!creep.memory.target && creep.memory.full) {
             let targets = creep.room.find(FIND_STRUCTURES, {
                 filter: (s) => {
                     return (
@@ -42,15 +48,6 @@ const roleWaller = {
             }
             // console.log('waller target: ' + target + ' | type: ' + target.structureType + ' | hp: ' + hp);
             creep.memory.target = target.id;
-            //MOVE TO TARGET
-        }
-
-        if (creep.memory.target && creep.memory.full) {
-            // console.log('rep: ' + target);
-            let target = Game.getObjectById(creep.memory.target);
-            if (creep.repair(target) === ERR_NOT_IN_RANGE) {
-                creep.moveTo(target, {visualizePathStyle: {stroke: '#000000'}});
-            }
         } else {
             // creep.say('+.gE');
             creep.getEnergy(true, true, false);
