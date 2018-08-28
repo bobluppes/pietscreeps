@@ -55,12 +55,12 @@ const roleRepairer = {
                         targets[i].priority = 6;
                         break;
                 }
-                console.log('target: ' + targets[i] + ' | type: ' + targets[i].structureType + ' | priority: ' + targets[i].priority);
+                // console.log('target: ' + targets[i] + ' | type: ' + targets[i].structureType + ' | priority: ' + targets[i].priority);
             }
             targets.sort(function (a, b) {
                 return a.priority - b.priority
             });
-            console.log('beep' + targets);
+            // console.log('beep' + targets);
             //MOVE TO TARGET
             if (targets.length) {
                 let target = creep.pos.findClosestByPath(targets.slice(0,3));

@@ -82,22 +82,22 @@ const roleHauler = {
             }
         }
         if (!creep.memory.full) {
-            let droppedEnergy = creep.room.find(FIND_DROPPED_RESOURCES, {
-                filter: (drop) => {
-                    return (drop.resourceType === RESOURCE_ENERGY && drop.amount > 50)
-                }
-            });
-            // PICKUP DROPPED ENERGY FIRST
-            if(droppedEnergy.length > 0) {
-                // console.log('dropped: ' + droppedEnergy);
-                if (creep.pickup(droppedEnergy[0], RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
-                    creep.moveTo(droppedEnergy[0], {visualizePathStyle: {stroke: '#ffffff'}});
-                }
-                //THEN COME CONTAINERS
-            } else {
-            // creep.say('haul.gE');
+            // let droppedEnergy = creep.room.find(FIND_DROPPED_RESOURCES, {
+            //     filter: (drop) => {
+            //         return (drop.resourceType === RESOURCE_ENERGY && drop.amount > 50)
+            //     }
+            // });
+            // // PICKUP DROPPED ENERGY FIRST
+            // if(droppedEnergy.length > 0) {
+            //     // console.log('dropped: ' + droppedEnergy);
+            //     if (creep.pickup(droppedEnergy[0], RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
+            //         creep.moveTo(droppedEnergy[0], {visualizePathStyle: {stroke: '#ffffff'}});
+            //     }
+            //     //THEN COME CONTAINERS
+            // } else {
+            // // creep.say('haul.gE');
             creep.getEnergy(false, true, false);
-            }
+            // }
         }
     }
 };
