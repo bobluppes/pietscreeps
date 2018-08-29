@@ -22,7 +22,6 @@ StructureSpawn.prototype.createBalancedCreep =
                 body.push(MOVE);
             }
         }
-
         // CREATE CREEP WITH THE CREATED BODY AND THE GIVEN ROLE
         return this.spawnCreep(body, newName, {memory: {role: roleName, full: false, home: this.room.name }});
     };
@@ -84,7 +83,7 @@ StructureSpawn.prototype.createRemoteHarvesterCreep =
         let body = [];
 
         //WORK PARTS
-        for (let i = 0; i < numberOfParts; i++) {
+        for (let i = 0; i < Math.floor(numberOfParts/3); i++) {
             body.push(WORK);
         }
         // CARRY PARTS

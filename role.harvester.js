@@ -38,7 +38,6 @@ const roleHarvester = {
                     switch (targets[i].structureType) {
                         case 'spawn':
                             targets[i].priority = 1;
-                            // console.log('extension');
                             break;
                         case 'extension':
                             targets[i].priority = 2;

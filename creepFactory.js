@@ -22,28 +22,31 @@ let creepFactory = {
         // var containers = Game.spawns['Spawn1'].room.find(FIND_STRUCTURES, {filter: {structureType: STRUCTURE_CONTAINER}})
 
         //SPAWNING
-        if(harvesters.length < 2 && room.energyAvailable > MinEnergyToSpawn) {
+        if (harvesters.length < 2 && room.energyAvailable > MinEnergyToSpawn) {
             Game.spawns['Spawn1'].createBalancedCreep(room.energyAvailable, 'harvester');
         }
-        else if(upgraders.length < 3 && room.energyAvailable > MinEnergyToSpawn) {
-            Game.spawns['Spawn1'].createBalancedCreep(room.energyAvailable, 'upgrader');
-        }
-        else if(builders.length < 2 && room.energyAvailable > MinEnergyToSpawn) {
-            Game.spawns['Spawn1'].createBalancedCreep(room.energyAvailable, 'builder');
-        }
-        else if(repairers.length < 1 && room.energyAvailable > MinEnergyToSpawn) {
-            Game.spawns['Spawn1'].createBalancedCreep(room.energyAvailable, 'repairer');
-        }
-        else if(miners.length < 2 && room.energyAvailable > MinEnergyToSpawn) {
+        else if (miners.length < 2 && room.energyAvailable > 550) {
             Game.spawns['Spawn1'].createMinerCreep();
         }
-        else if(haulers.length < 4 && room.energyAvailable > MinEnergyToSpawn) {
+        else if (upgraders.length < 3 && room.energyAvailable > MinEnergyToSpawn) {
+            Game.spawns['Spawn1'].createBalancedCreep(room.energyAvailable, 'upgrader');
+        }
+        else if (builders.length < 2 && room.energyAvailable > MinEnergyToSpawn) {
+            Game.spawns['Spawn1'].createBalancedCreep(room.energyAvailable, 'builder');
+        }
+        else if (repairers.length < 1 && room.energyAvailable > MinEnergyToSpawn) {
+            Game.spawns['Spawn1'].createBalancedCreep(room.energyAvailable, 'repairer');
+        }
+        else if (miners.length < 2 && room.energyAvailable > MinEnergyToSpawn) {
+            Game.spawns['Spawn1'].createMinerCreep();
+        }
+        else if (haulers.length < 4 && room.energyAvailable > MinEnergyToSpawn) {
             Game.spawns['Spawn1'].createHaulerCreep(room.energyAvailable);
         }
-        else if(wallers.length < 2 && room.energyAvailable > MinEnergyToSpawn) {
+        else if (wallers.length < 2 && room.energyAvailable > MinEnergyToSpawn) {
             Game.spawns['Spawn1'].createBalancedCreep(room.energyAvailable, 'waller');
         }
-        else if(remoteHarvesters.length < 3 && room.energyAvailable > MinEnergyToSpawn) {
+        else if (remoteHarvesters.length < 3 && room.energyAvailable > MinEnergyToSpawn) {
             Game.spawns['Spawn1'].createRemoteHarvesterCreep(room.energyAvailable);
         }
 

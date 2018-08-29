@@ -5,53 +5,66 @@
 Creep.prototype.getEnergy =
     function (useStorage, useContainer, useSource) {
         /** @type {StructureContainer} */
-        let container;
-        let storage;
+        let container = false;
+        let storage = false;
+        let source = false;
         if (useStorage) {
-            storage = this.pos.findClosestByPath(FIND_STRUCTURES, {
-                filter: s => ( s.structureType === STRUCTURE_STORAGE
-                    && s.store[RESOURCE_ENERGY] > 0)
-            });
-
-            if (storage !== undefined) {
-                if (this.withdraw(storage, RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
-                    this.moveTo(storage, {visualizePathStyle: {stroke: '#0bff00'}});
+            if (this.memory.target) {
+                if (this.withdraw(Game.getObjectById(this.memory.target), RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
+                    this.moveTo(Game.getObjectById(this.memory.target), {visualizePathStyle: {stroke: '#0bff00'}});
                 }
+            } else {
+                storage = this.pos.findClosestByPath(FIND_STRUCTURES, {
+                    filter: s => ( s.structureType === STRUCTURE_STORAGE
+                        && s.store[RESOURCE_ENERGY] > 0)
+                });
+                this.memory.target = storage.id;
             }
+            // console.log('gE.' + this.memory.role + ':' + storage);
         }
-        if (storage == undefined && useContainer) {
-            switch (this.memory.role) {
-                case 'hauler':
-                    container = this.pos.findClosestByPath(FIND_STRUCTURES, {
-                        filter: s => (s.structureType === STRUCTURE_CONTAINER
-                            && s.store[RESOURCE_ENERGY] > 600)
-                    });
-                    //this.say('hauler');
-                    break;
-                default:
-                    container = this.pos.findClosestByPath(FIND_STRUCTURES, {
-                        filter: s => (s.structureType === STRUCTURE_CONTAINER
-                            && s.store[RESOURCE_ENERGY] > 0)
-                    });
-                    // this.say('def');
-                    break;
+        if (useContainer && !storage) {
+            if (this.memory.target) {
+                if (this.withdraw(Game.getObjectById(this.memory.target), RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
+                    this.moveTo(Game.getObjectById(this.memory.target), {visualizePathStyle: {stroke: '#0bff00'}});
+                }
+            } else {
+                switch (this.memory.role) {
+                    case 'hauler':
+                        container = this.pos.findClosestByPath(FIND_STRUCTURES, {
+                            filter: s => (s.structureType === STRUCTURE_CONTAINER
+                                && s.store[RESOURCE_ENERGY] > this.carryCapacity)
+                        });
+                        //this.say('hauler');
+                        break;
+                    default:
+                        container = this.pos.findClosestByPath(FIND_STRUCTURES, {
+                            filter: s => (s.structureType === STRUCTURE_CONTAINER
+                                && s.store[RESOURCE_ENERGY] > 0)
+                        });
+                        // this.say('def');
+                        break;
+                }
+                this.memory.target = container.id;
             }
             // console.log('gE.' + this.memory.role + ':' + container);
-            if (container !== undefined) {
-                if (this.withdraw(container, RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
-                    this.moveTo(container, {visualizePathStyle: {stroke: '#0bff00'}});
-                }
-            }
         }
         //FINALLY SOURCES
-        if (container == undefined && useSource) {
-            let source = this.pos.findClosestByPath(FIND_SOURCES_ACTIVE);
-            // console.log('getEnergy source: ' + source);
-            if (this.harvest(source) === ERR_NOT_IN_RANGE) {
-                this.moveTo(source, {visualizePathStyle: {stroke: '#00ff23'}});
+        if (useSource && !container && !storage) {
+            if (this.memory.target) {
+                if (this.harvest(Game.getObjectById(this.memory.target)) === ERR_NOT_IN_RANGE) {
+                    this.moveTo(Game.getObjectById(this.memory.target), {visualizePathStyle: {stroke: '#00ff23'}});
+                }
+            } else {
+                source = this.pos.findClosestByPath(FIND_SOURCES_ACTIVE);
+                this.memory.target = source.id;
             }
+            // console.log('getEnergy source: ' + source);
         }
+        console.log(this.memory.role + ' gets E from: ' + Game.getObjectById(this.memory.target));
+        console.log('source:' + source + ' |container: ' + container + ' | storage: ' + storage);
     };
+
+
 
 /** @function
  @param {string} structureType

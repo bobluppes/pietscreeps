@@ -63,14 +63,14 @@ const roleHauler = {
                             break;
                     }
                 }
-                console.log(creep.name + ' target: ' + targets[i] + ' | type: ' + targets[i].structureType + ' | priority: ' + targets[i].priority);
+                //console.log(creep.name + ' target: ' + targets[i] + ' | type: ' + targets[i].structureType + ' | priority: ' + targets[i].priority);
             }
             //SORT BY PRIORITY
             targets.sort(function (a, b) {
                 return a.priority - b.priority
             });
 
-            //FIND CLOSEST INSTANCE OF HIGHEST PRIORITY STRUCTURETYPE
+            //FIND CLOSEST INSTANCE OF HIGHEST PRIORITY STRUCTURETYPE (vaag als targets maar 1 object heeft)
             targets = _.filter(targets, (t) => t.structureType === targets[0].structureType);
             let target = false;
             if (targets.length > 1) {

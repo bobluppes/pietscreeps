@@ -12,6 +12,7 @@ const roleWaller = {
         //CHECK INVENTORY
         if (creep.memory.full && creep.carry.energy === 0) {
             creep.memory.full = false;
+            creep.memory.target = false;
             creep.say('🔄 get');
         }
         if (!creep.memory.full && creep.carry.energy === creep.carryCapacity) {
