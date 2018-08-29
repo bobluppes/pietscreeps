@@ -14,10 +14,12 @@ const roleHarvester = {
 
         if(creep.memory.full && creep.carry.energy === 0) {
             creep.memory.full = false;
+            creep.memory.target = false;
             creep.say('🔄 get');
         }
         if(!creep.memory.full && creep.carry.energy === creep.carryCapacity) {
             creep.memory.full = true;
+            creep.memory.target = false;
             creep.say('💯');
         }
 
