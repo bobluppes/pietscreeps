@@ -58,7 +58,6 @@ let creepFactory = {
                 Game.spawns['Spawn1'].pos.y,
                 {align: 'left', opacity: 0.8});
         }
-
     }
 };
 

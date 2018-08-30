@@ -23,7 +23,7 @@ const roleRemoteHarvester = {
         else if (!creep.memory.full && creep.carry.energy === creep.carryCapacity) {
             // switch state
             creep.memory.full = true;
-            creep.memory.target = false;
+            creep.clearGetEnergyTargets();
         }
 
         if (creep.memory.full) {

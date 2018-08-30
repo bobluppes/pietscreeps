@@ -10,11 +10,11 @@ Creep.prototype.getEnergy =
         let source = false;
 
         if (useStorage) {
-            if (this.memory.target) {
-                if (this.withdraw(Game.getObjectById(this.memory.target), RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
-                    this.moveTo(Game.getObjectById(this.memory.target), {visualizePathStyle: {stroke: '#0bff00'}});
-                } else if (this.withdraw(Game.getObjectById(this.memory.target), RESOURCE_ENERGY) === ERR_NOT_ENOUGH_RESOURCES) {
-                    this.memory.target = false;
+            if (this.memory.storage) {
+                if (this.withdraw(Game.getObjectById(this.memory.storage), RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
+                    this.moveTo(Game.getObjectById(this.memory.storage), {visualizePathStyle: {stroke: '#0bff00'}});
+                } else if (this.withdraw(Game.getObjectById(this.memory.storage), RESOURCE_ENERGY) === ERR_NOT_ENOUGH_RESOURCES) {
+                    this.memory.storage = false;
                 }
             } else {
                 storage = this.pos.findClosestByPath(FIND_STRUCTURES, {
@@ -22,17 +22,17 @@ Creep.prototype.getEnergy =
                         && s.store[RESOURCE_ENERGY] > 0)
                 });
                 if (storage) {
-                    this.memory.target = storage.id;
+                    this.memory.storage = storage.id;
                 }
             }
             // console.log('gE.' + this.memory.role + ':' + storage);
         }
-        if (useContainer && !storage) {
-            if (this.memory.target) {
-                if (this.withdraw(Game.getObjectById(this.memory.target), RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
-                    this.moveTo(Game.getObjectById(this.memory.target), {visualizePathStyle: {stroke: '#0bff00'}});
-                } else if (this.withdraw(Game.getObjectById(this.memory.target), RESOURCE_ENERGY) === ERR_NOT_ENOUGH_RESOURCES) {
-                    this.memory.target = false;
+        if (useContainer && !this.memory.storage) {
+            if (this.memory.container) {
+                if (this.withdraw(Game.getObjectById(this.memory.container), RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
+                    this.moveTo(Game.getObjectById(this.memory.container), {visualizePathStyle: {stroke: '#0bff00'}});
+                } else if (this.withdraw(Game.getObjectById(this.memory.container), RESOURCE_ENERGY) === ERR_NOT_ENOUGH_RESOURCES) {
+                    this.memory.container = false;
                 }
             } else {
                 switch (this.memory.role) {
@@ -52,30 +52,38 @@ Creep.prototype.getEnergy =
                         break;
                 }
                 if (container) {
-                    this.memory.target = container.id;
+                    this.memory.container = container.id;
                 }
             }
             // console.log('gE.' + this.memory.role + ':' + container);
         }
         //FINALLY SOURCES
-        if (useSource && !container && !storage) {
-            if (this.memory.target) {
-                if (this.harvest(Game.getObjectById(this.memory.target)) === ERR_NOT_IN_RANGE) {
-                    this.moveTo(Game.getObjectById(this.memory.target), {visualizePathStyle: {stroke: '#00ff23'}});
-                } else if (this.harvest(Game.getObjectById(this.memory.target)) === ERR_NOT_ENOUGH_RESOURCES) {
-                    this.memory.target = false;
+        if (useSource && !this.memory.container && !this.memory.storage) {
+            if (this.memory.source) {
+                if (this.harvest(Game.getObjectById(this.memory.source)) === ERR_NOT_IN_RANGE) {
+                    this.moveTo(Game.getObjectById(this.memory.source), {visualizePathStyle: {stroke: '#00ff23'}});
+                } else if (this.harvest(Game.getObjectById(this.memory.source)) === ERR_NOT_ENOUGH_RESOURCES) {
+                    this.memory.source = false;
                 }
             } else {
                 source = this.pos.findClosestByPath(FIND_SOURCES_ACTIVE);
-                this.memory.target = source.id;
+                this.memory.source = source.id;
             }
             // console.log('getEnergy source: ' + source);
         }
         console.log(this.name + ' gets E from: ' + Game.getObjectById(this.memory.target));
-        console.log('source:' + source + ' | container: ' + container + ' | storage: ' + storage);
+        console.log('source:' + this.memory.source + ' | container: ' + this.memory.container + ' | storage: ' + this.memory.storage);
     };
 
-
+/** @function
+ */
+Creep.prototype.clearGetEnergyTargets =
+    function () {
+        this.memory.target = false;
+        delete this.memory.storage;
+        delete this.memory.container;
+        delete this.memory.source;
+    };
 
 /** @function
  @param {string} structureType

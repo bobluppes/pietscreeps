@@ -19,7 +19,7 @@ const roleHarvester = {
         }
         if(!creep.memory.full && creep.carry.energy === creep.carryCapacity) {
             creep.memory.full = true;
-            creep.memory.target = false;
+            creep.clearGetEnergyTargets();
             creep.say('💯');
         }
 

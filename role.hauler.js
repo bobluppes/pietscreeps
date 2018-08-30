@@ -17,7 +17,7 @@ const roleHauler = {
         }
         if(!creep.memory.full && creep.carry.energy === creep.carryCapacity) {
             creep.memory.full = true;
-            creep.memory.target = false;
+            creep.clearGetEnergyTargets();
             creep.say('💯');
         }
 
@@ -34,7 +34,7 @@ const roleHauler = {
             let targets = creep.room.find(FIND_MY_STRUCTURES, {
                 filter: (s) => {
                     return (
-                        ((s.structureType === STRUCTURE_STORAGE || s.structureType === STRUCTURE_CONTAINER)
+                        (s.structureType === STRUCTURE_STORAGE
                             && s.storeCapacity - s.store.energy > 300)
                         ||
                         ((s.structureType === STRUCTURE_SPAWN || s.structureType === STRUCTURE_EXTENSION || s.structureType === STRUCTURE_TOWER)
@@ -42,45 +42,47 @@ const roleHauler = {
                     );
                 }
             });
-            for (let i = 0; i < targets.length; i++) {
-                // console.log('targett: ' + targets[target].structureType);
-                if (targets[i].energy < targets[i].energyCapacity) {
-                    switch (targets[i].structureType) {
-                        case 'tower':
-                            targets[i].priority = 1;
-                            break;
-                        case 'extension':
-                            targets[i].priority = 2;
-                            break;
-                        case 'spawn':
-                            targets[i].priority = 3;
-                            break;
-                        case 'container':
-                            targets[i].priority = 4;
-                            break;
-                        case 'storage':
-                            targets[i].priority = 5;
-                            break;
+            if (targets) {
+                for (let i = 0; i < targets.length; i++) {
+                    // console.log('targett: ' + targets[target].structureType);
+                    if (targets[i].energy < targets[i].energyCapacity) {
+                        switch (targets[i].structureType) {
+                            case 'tower':
+                                targets[i].priority = 1;
+                                break;
+                            case 'extension':
+                                targets[i].priority = 2;
+                                break;
+                            case 'spawn':
+                                targets[i].priority = 3;
+                                break;
+                            case 'storage':
+                                targets[i].priority = 4;
+                                break;
+                        }
                     }
+                    //console.log(creep.name + ' target: ' + targets[i] + ' | type: ' + targets[i].structureType + ' | priority: ' + targets[i].priority);
                 }
-                //console.log(creep.name + ' target: ' + targets[i] + ' | type: ' + targets[i].structureType + ' | priority: ' + targets[i].priority);
-            }
-            //SORT BY PRIORITY
-            targets.sort(function (a, b) {
-                return a.priority - b.priority
-            });
+                //SORT BY PRIORITY
+                targets.sort(function (a, b) {
+                    return a.priority - b.priority
+                });
 
-            //FIND CLOSEST INSTANCE OF HIGHEST PRIORITY STRUCTURETYPE (vaag als targets maar 1 object heeft)
-            targets = _.filter(targets, (t) => t.structureType === targets[0].structureType);
-            let target = false;
-            if (targets.length > 1) {
-                target = creep.pos.findClosestByPath(targets);
+                //FIND CLOSEST INSTANCE OF HIGHEST PRIORITY STRUCTURETYPE (vaag als targets maar 1 object heeft)
+                targets = _.filter(targets, (t) => t.structureType === targets[0].structureType);
+                let target = false;
+                if (targets.length > 1) {
+                    target = creep.pos.findClosestByPath(targets);
+                } else {
+                    target = targets[0];
+                }
+                creep.memory.target = target.id;
+                console.log('target: ' + target + ' |targets: ' + targets);
             } else {
-                target = targets[0];
+                roleUpgrader.run(creep);
             }
 
-            console.log('target: ' + target + ' |targets: ' + targets);
-            creep.memory.target = target.id;
+
         }
         if (!creep.memory.full) {
             creep.getEnergy(false, true, false);

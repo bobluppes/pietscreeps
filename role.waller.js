@@ -17,9 +17,8 @@ const roleWaller = {
         }
         if (!creep.memory.full && creep.carry.energy === creep.carryCapacity) {
             creep.memory.full = true;
-            creep.memory.target = false;
+            creep.clearGetEnergyTargets();
             creep.say('💯');
-
         }
 
         if (creep.memory.target && creep.memory.full) {
