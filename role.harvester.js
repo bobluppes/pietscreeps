@@ -38,10 +38,10 @@ const roleHarvester = {
                 // console.log('targett: ' + targets[target].structureType);
                 if (targets[i].energy < targets[i].energyCapacity) {
                     switch (targets[i].structureType) {
-                        case 'spawn':
+                        case 'extension':
                             targets[i].priority = 1;
                             break;
-                        case 'extension':
+                        case 'spawn':
                             targets[i].priority = 2;
                             break;
                         case 'tower':

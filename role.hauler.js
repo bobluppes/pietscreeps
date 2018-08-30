@@ -46,13 +46,13 @@ const roleHauler = {
                 // console.log('targett: ' + targets[target].structureType);
                 if (targets[i].energy < targets[i].energyCapacity) {
                     switch (targets[i].structureType) {
-                        case 'spawn':
+                        case 'tower':
                             targets[i].priority = 1;
                             break;
-                        case 'tower':
+                        case 'extension':
                             targets[i].priority = 2;
                             break;
-                        case 'extension':
+                        case 'spawn':
                             targets[i].priority = 3;
                             break;
                         case 'container':

@@ -4,21 +4,26 @@
  @param {boolean} useSource */
 Creep.prototype.getEnergy =
     function (useStorage, useContainer, useSource) {
-        /** @type {StructureContainer} */
-        let container = false;
+
         let storage = false;
+        let container = false;
         let source = false;
+
         if (useStorage) {
             if (this.memory.target) {
                 if (this.withdraw(Game.getObjectById(this.memory.target), RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
                     this.moveTo(Game.getObjectById(this.memory.target), {visualizePathStyle: {stroke: '#0bff00'}});
+                } else if (this.withdraw(Game.getObjectById(this.memory.target), RESOURCE_ENERGY) === ERR_NOT_ENOUGH_RESOURCES) {
+                    this.memory.target = false;
                 }
             } else {
                 storage = this.pos.findClosestByPath(FIND_STRUCTURES, {
                     filter: s => ( s.structureType === STRUCTURE_STORAGE
                         && s.store[RESOURCE_ENERGY] > 0)
                 });
-                this.memory.target = storage.id;
+                if (storage) {
+                    this.memory.target = storage.id;
+                }
             }
             // console.log('gE.' + this.memory.role + ':' + storage);
         }
@@ -26,6 +31,8 @@ Creep.prototype.getEnergy =
             if (this.memory.target) {
                 if (this.withdraw(Game.getObjectById(this.memory.target), RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
                     this.moveTo(Game.getObjectById(this.memory.target), {visualizePathStyle: {stroke: '#0bff00'}});
+                } else if (this.withdraw(Game.getObjectById(this.memory.target), RESOURCE_ENERGY) === ERR_NOT_ENOUGH_RESOURCES) {
+                    this.memory.target = false;
                 }
             } else {
                 switch (this.memory.role) {
@@ -44,7 +51,9 @@ Creep.prototype.getEnergy =
                         // this.say('def');
                         break;
                 }
-                this.memory.target = container.id;
+                if (container) {
+                    this.memory.target = container.id;
+                }
             }
             // console.log('gE.' + this.memory.role + ':' + container);
         }
@@ -53,6 +62,8 @@ Creep.prototype.getEnergy =
             if (this.memory.target) {
                 if (this.harvest(Game.getObjectById(this.memory.target)) === ERR_NOT_IN_RANGE) {
                     this.moveTo(Game.getObjectById(this.memory.target), {visualizePathStyle: {stroke: '#00ff23'}});
+                } else if (this.harvest(Game.getObjectById(this.memory.target)) === ERR_NOT_ENOUGH_RESOURCES) {
+                    this.memory.target = false;
                 }
             } else {
                 source = this.pos.findClosestByPath(FIND_SOURCES_ACTIVE);
@@ -60,8 +71,8 @@ Creep.prototype.getEnergy =
             }
             // console.log('getEnergy source: ' + source);
         }
-        console.log(this.memory.role + ' gets E from: ' + Game.getObjectById(this.memory.target));
-        console.log('source:' + source + ' |container: ' + container + ' | storage: ' + storage);
+        console.log(this.name + ' gets E from: ' + Game.getObjectById(this.memory.target));
+        console.log('source:' + source + ' | container: ' + container + ' | storage: ' + storage);
     };
 
 

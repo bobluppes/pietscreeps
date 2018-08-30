@@ -23,8 +23,8 @@ const roleWaller = {
         }
 
         if (creep.memory.target && creep.memory.full) {
-            // console.log('rep: ' + target);
             let target = Game.getObjectById(creep.memory.target);
+            //console.log('rep: ' + target);
             if (creep.repair(target) === ERR_NOT_IN_RANGE) {
                 creep.moveTo(target, {visualizePathStyle: {stroke: '#000000'}});
             }

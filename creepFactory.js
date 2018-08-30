@@ -22,7 +22,7 @@ let creepFactory = {
         // var containers = Game.spawns['Spawn1'].room.find(FIND_STRUCTURES, {filter: {structureType: STRUCTURE_CONTAINER}})
 
         //SPAWNING
-        if (harvesters.length < 2 && room.energyAvailable > MinEnergyToSpawn) {
+        if (harvesters.length < 2 && room.energyAvailable > 299) {
             Game.spawns['Spawn1'].createBalancedCreep(room.energyAvailable, 'harvester');
         }
         else if (miners.length < 2 && room.energyAvailable > 550) {
@@ -40,7 +40,7 @@ let creepFactory = {
         else if (miners.length < 2 && room.energyAvailable > MinEnergyToSpawn) {
             Game.spawns['Spawn1'].createMinerCreep();
         }
-        else if (haulers.length < 4 && room.energyAvailable > MinEnergyToSpawn) {
+        else if (haulers.length < 2 && room.energyAvailable > MinEnergyToSpawn) {
             Game.spawns['Spawn1'].createHaulerCreep(room.energyAvailable);
         }
         else if (wallers.length < 2 && room.energyAvailable > MinEnergyToSpawn) {
