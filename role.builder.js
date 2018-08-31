@@ -7,9 +7,7 @@ let roleBuilder = {
     run: function(creep) {
 
         //Identification
-        if (Game.time % 5 === 0) {
-            creep.say('🔨');
-        }
+        creep.identify();
 
         if (creep.memory.full && creep.carry.energy === 0) {
             creep.memory.full = false;
@@ -22,12 +20,12 @@ let roleBuilder = {
             creep.say('🚧 build');
         }
 
-        if (creep.memory.target && creep.memory.full) {
-            //console.log('build: ' + Game.getObjectById(creep.memory.target));
-            if (creep.build(Game.getObjectById(creep.memory.target)) === ERR_NOT_IN_RANGE) {
-                creep.moveTo(Game.getObjectById(creep.memory.target), {visualizePathStyle: {stroke: '#fffe00'}});
+        if (roleBuilder.target && creep.memory.full) {
+            //console.log('build: ' + Game.getObjectById(roleBuilder.target));
+            if (creep.build(Game.getObjectById(roleBuilder.target)) === ERR_NOT_IN_RANGE) {
+                creep.moveTo(Game.getObjectById(roleBuilder.target), {visualizePathStyle: {stroke: '#fffe00'}});
             }
-        } else if (!creep.memory.target && creep.memory.full) {
+        } else if (!roleBuilder.target && creep.memory.full) {
             let targets = creep.room.find(FIND_CONSTRUCTION_SITES);
             // Memory.constructionAvailable = targets.length;
             //console.log(' | targets: ' + targets);
@@ -70,7 +68,7 @@ let roleBuilder = {
                     target = targets[0];
                 }
                 //console.log('target: ' + target + ' | targets: ' + targets);
-                creep.memory.target = target.id;
+                roleBuilder.target = target.id;
 
             } else {
                 roleRepairer.run(creep);

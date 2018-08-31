@@ -4,6 +4,9 @@ const roleRemoteHarvester = {
 
     /** @param {Creep} creep */
     run: function(creep) {
+
+        creep.identify();
+
         //INIT
         creep.memory.home = Game.spawns['Spawn1'].room.name;
         creep.memory.sourceIndex = [0];

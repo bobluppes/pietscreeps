@@ -5,32 +5,36 @@ let roadHP = 1000;
 let containerHP = 1000;
 
 
-const roleRepairer = {
+let roleRepairer = {
+    target: false,
+
     /** @param {Creep} creep **/
     run:function(creep) {
-        creep.clearGetEnergyTargets();
-        //IDENTIFICATION
-        if (Game.time % 5 === 0) {
-            creep.say('🔧️');
-        }
+
+        //this is hier het role object
+        //console.log('this '+ this.target);
+
+        creep.identify();
 
         if (creep.memory.full && creep.carry.energy === 0) {
             creep.memory.full = false;
+            roleRepairer.target = false;
             creep.clearGetEnergyTargets();
             creep.say('🔄 get');
         }
         if (!creep.memory.full && creep.carry.energy === creep.carryCapacity) {
             creep.memory.full = true;
+            roleRepairer.target = false;
             creep.clearGetEnergyTargets();
             creep.say('💯');
         }
 
-        if (creep.memory.target && creep.memory.full) {
-            console.log('REP:::: ' + Game.getObjectById(creep.memory.target));
-            if (creep.repair(creep.memory.target) === ERR_NOT_IN_RANGE) {
-                creep.moveTo(creep.memory.target, {visualizePathStyle: {stroke: '#ffffff'}});
+        if (roleRepairer.target && creep.memory.full) {
+            //console.log('REP:::: ' + Game.getObjectById(roleRepairer.target));
+            if (creep.repair(Game.getObjectById(roleRepairer.target)) === ERR_NOT_IN_RANGE) {
+                creep.moveTo(Game.getObjectById(roleRepairer.target), {visualizePathStyle: {stroke: '#ffffff'}});
             }
-        } else if (!creep.memory.target && creep.memory.full) {
+        } else if (!roleRepairer.target && creep.memory.full) {
             let targets = creep.room.find(FIND_STRUCTURES, {
                 filter: (s) => {
                     return (
@@ -77,7 +81,7 @@ const roleRepairer = {
                     target = targets[0];
                 }
                 //console.log('target: ' + target + ' | targets: ' + targets);
-                creep.memory.target = target.id;
+                roleRepairer.target = target.id;
             } else {
                 roleUpgrader.run(creep);
                 // creep.say('upg.rol');

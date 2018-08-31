@@ -8,10 +8,8 @@ let roleHauler = {
         // creep.memory.home = Game.creeps[creep.name].room.name;
         //console.log('doel:  '+ roleHauler.target + ' pers: ' + roleHauler.persistent);
 
-        //Identification
-        if (Game.time % 5 === 0) {
-            creep.say('🚛');
-        }
+        creep.identify();
+
 
         if(creep.memory.full && creep.carry.energy === 0) {
             creep.memory.full = false;

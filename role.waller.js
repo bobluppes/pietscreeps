@@ -5,10 +5,8 @@ const roleWaller = {
     /** @param {Creep} creep **/
     run:function(creep) {
 
-        //IDENTIFICATION
-        if (Game.time % 5 === 0) {
-            creep.say('🛡️');
-        }
+        creep.identify();
+
         //CHECK INVENTORY
         if (creep.memory.full && creep.carry.energy === 0) {
             creep.memory.full = false;

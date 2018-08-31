@@ -67,8 +67,10 @@ Creep.prototype.getEnergy =
                     this.clearGetEnergyTargets();
                 }
             } else {
-                source = this.pos.findClosestByPath(FIND_SOURCES_ACTIVE);
-                this.memory.source = this.memory.target = source.id;
+                source = this.pos.findClosestByPath(FIND_SOURCES_ACTIVE)
+                if (source) {
+                    this.memory.source = this.memory.target = source.id;
+                }
             }
             // console.log('getEnergy source: ' + source);
         }
@@ -108,7 +110,32 @@ Creep.prototype.avgHits =
 Creep.prototype.identify =
     function () {
         if (Game.time % 5 === 0) {
-            creep.say(creep.memory.roleName);
+            switch (this.memory.role) {
+                case 'builder':
+                    this.say('🔨');
+                    break;
+                case 'harvester':
+                    this.say('🌾');
+                    break;
+                case 'hauler':
+                    this.say('🚛');
+                    break;
+                case 'miner':
+                    this.say('⛏');
+                    break;
+                case 'remoteHarvester':
+                    this.say('🚛 🌾');
+                    break;
+                case 'repairer':
+                    this.say('🔧️');
+                    break;
+                case 'upgrader':
+                    this.say('⚡');
+                    break;
+                case 'waller':
+                    this.say('🛡️');
+                    break;
+            }
         }
     };
 

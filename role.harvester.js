@@ -7,10 +7,7 @@ const roleHarvester = {
         // let avgHits = creep.avgHits(STRUCTURE_WALL);
         // console.log('bieb ' + avgHits);
 
-        //Identification
-        if (Game.time % 5 === 0) {
-            creep.say('🌾');
-        }
+        creep.identify();
 
         if(creep.memory.full && creep.carry.energy === 0) {
             creep.memory.full = false;
