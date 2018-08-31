@@ -10,11 +10,12 @@ Creep.prototype.getEnergy =
         let source = false;
 
         if (useStorage) {
+            //console.log('YEET:::: ' + this.memory.storage);
             if (this.memory.storage) {
-                if (this.withdraw(Game.getObjectById(this.memory.storage), RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
-                    this.moveTo(Game.getObjectById(this.memory.storage), {visualizePathStyle: {stroke: '#0bff00'}});
-                } else if (this.withdraw(Game.getObjectById(this.memory.storage), RESOURCE_ENERGY) === ERR_NOT_ENOUGH_RESOURCES) {
-                    this.memory.storage = false;
+                if (this.withdraw(Game.getObjectById(this.memory.target), RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
+                    this.moveTo(Game.getObjectById(this.memory.target), {visualizePathStyle: {stroke: '#0bff00'}});
+                } else if (this.withdraw(Game.getObjectById(this.memory.target), RESOURCE_ENERGY) === ERR_NOT_ENOUGH_RESOURCES) {
+                    this.clearGetEnergyTargets();
                 }
             } else {
                 storage = this.pos.findClosestByPath(FIND_STRUCTURES, {
@@ -22,17 +23,17 @@ Creep.prototype.getEnergy =
                         && s.store[RESOURCE_ENERGY] > 0)
                 });
                 if (storage) {
-                    this.memory.storage = storage.id;
+                    this.memory.storage = this.memory.target = storage.id;
                 }
             }
             // console.log('gE.' + this.memory.role + ':' + storage);
         }
         if (useContainer && !this.memory.storage) {
             if (this.memory.container) {
-                if (this.withdraw(Game.getObjectById(this.memory.container), RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
-                    this.moveTo(Game.getObjectById(this.memory.container), {visualizePathStyle: {stroke: '#0bff00'}});
-                } else if (this.withdraw(Game.getObjectById(this.memory.container), RESOURCE_ENERGY) === ERR_NOT_ENOUGH_RESOURCES) {
-                    this.memory.container = false;
+                if (this.withdraw(Game.getObjectById(this.memory.target), RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
+                    this.moveTo(Game.getObjectById(this.memory.target), {visualizePathStyle: {stroke: '#0bff00'}});
+                } else if (this.withdraw(Game.getObjectById(this.memory.target), RESOURCE_ENERGY) === ERR_NOT_ENOUGH_RESOURCES) {
+                    this.clearGetEnergyTargets();
                 }
             } else {
                 switch (this.memory.role) {
@@ -52,7 +53,7 @@ Creep.prototype.getEnergy =
                         break;
                 }
                 if (container) {
-                    this.memory.container = container.id;
+                    this.memory.container = this.memory.target = container.id;
                 }
             }
             // console.log('gE.' + this.memory.role + ':' + container);
@@ -60,14 +61,14 @@ Creep.prototype.getEnergy =
         //FINALLY SOURCES
         if (useSource && !this.memory.container && !this.memory.storage) {
             if (this.memory.source) {
-                if (this.harvest(Game.getObjectById(this.memory.source)) === ERR_NOT_IN_RANGE) {
-                    this.moveTo(Game.getObjectById(this.memory.source), {visualizePathStyle: {stroke: '#00ff23'}});
-                } else if (this.harvest(Game.getObjectById(this.memory.source)) === ERR_NOT_ENOUGH_RESOURCES) {
-                    this.memory.source = false;
+                if (this.harvest(Game.getObjectById(this.memory.target)) === ERR_NOT_IN_RANGE) {
+                    this.moveTo(Game.getObjectById(this.memory.target), {visualizePathStyle: {stroke: '#00ff23'}});
+                } else if (this.harvest(Game.getObjectById(this.memory.target)) === ERR_NOT_ENOUGH_RESOURCES) {
+                    this.clearGetEnergyTargets();
                 }
             } else {
                 source = this.pos.findClosestByPath(FIND_SOURCES_ACTIVE);
-                this.memory.source = source.id;
+                this.memory.source = this.memory.target = source.id;
             }
             // console.log('getEnergy source: ' + source);
         }

@@ -70,14 +70,13 @@ const roleHauler = {
 
                 //FIND CLOSEST INSTANCE OF HIGHEST PRIORITY STRUCTURETYPE (vaag als targets maar 1 object heeft)
                 targets = _.filter(targets, (t) => t.structureType === targets[0].structureType);
-                let target = false;
-                if (targets.length > 1) {
-                    target = creep.pos.findClosestByPath(targets);
-                } else {
+                //console.log(targets.length);
+                let target = creep.pos.findClosestByPath(targets);
+                if (!target) {
                     target = targets[0];
                 }
+                //console.log('target: ' + target + ' | targets: ' + targets);
                 creep.memory.target = target.id;
-                console.log('target: ' + target + ' |targets: ' + targets);
             } else {
                 roleUpgrader.run(creep);
             }
