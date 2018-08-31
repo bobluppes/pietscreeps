@@ -8,21 +8,28 @@ let containerHP = 1000;
 const roleRepairer = {
     /** @param {Creep} creep **/
     run:function(creep) {
-
+        creep.clearGetEnergyTargets();
         //IDENTIFICATION
         if (Game.time % 5 === 0) {
             creep.say('🔧️');
         }
 
-        if(creep.memory.full && creep.carry.energy === 0) {
+        if (creep.memory.full && creep.carry.energy === 0) {
             creep.memory.full = false;
+            creep.clearGetEnergyTargets();
             creep.say('🔄 get');
         }
-        if(!creep.memory.full && creep.carry.energy === creep.carryCapacity) {
+        if (!creep.memory.full && creep.carry.energy === creep.carryCapacity) {
             creep.memory.full = true;
+            creep.clearGetEnergyTargets();
             creep.say('💯');
         }
-        if(creep.memory.full) {
+        if (creep.memory.target && creep.memory.full) {
+            //console.log('rep: ' + Game.getObjectById(creep.memory.target));
+            if (creep.repair(creep.memory.target) === ERR_NOT_IN_RANGE) {
+                creep.moveTo(creep.memory.target, {visualizePathStyle: {stroke: '#ffffff'}});
+            }
+        } else if (!creep.memory.target && creep.memory.full) {
             let targets = creep.room.find(FIND_STRUCTURES, {
                 filter: (s) => {
                     return (
@@ -33,41 +40,43 @@ const roleRepairer = {
                     )   // DIT FILTER MOET ONDERSCHEID MAKEN TUSSEN CONTAINERS, WALL en RAMPARTS VOOR HOEVEEL HITS HIJ GEREPT MOET WORDEN
                 }
             });
+            if (targets) {
+                for (let i = 0; i < targets.length; i++) {
+                    switch (targets[i].structureType) {
+                        case 'container':
+                            targets[i].priority = 1;
+                            break;
+                        case 'storage':
+                            targets[i].priority = 2;
+                            break;
+                        case 'road':
+                            targets[i].priority = 3;
+                            break;
+                        case 'rampart':
+                            targets[i].priority = 4;
+                            break;
+                        case 'constructedWall':
+                            targets[i].priority = 5;
+                            break;
+                        default:
+                            targets[i].priority = 6;
+                            break;
+                    }
+                    // console.log(creep.name + ' target: ' + targets[i] + ' | type: ' + targets[i].structureType + ' | priority: ' + targets[i].priority);
+                }
+                targets.sort(function (a, b) {
+                    return a.priority - b.priority
+                });
+                // console.log('beep' + targets);
 
-            for (let i = 0; i < targets.length; i++) {
-                switch (targets[i].structureType) {
-                    case 'container':
-                        targets[i].priority = 1;
-                        break;
-                    case 'storage':
-                        targets[i].priority = 2;
-                        break;
-                    case 'road':
-                        targets[i].priority = 3;
-                        break;
-                    case 'rampart':
-                        targets[i].priority = 4;
-                        break;
-                    case 'constructedWall':
-                        targets[i].priority = 5;
-                        break;
-                    default:
-                        targets[i].priority = 6;
-                        break;
+                //FIND CLOSEST INSTANCE OF HIGHEST PRIORITY STRUCTURETYPE (vaag als targets maar 1 object heeft)
+                targets = _.filter(targets, (t) => t.structureType === targets[0].structureType);
+                let target = creep.pos.findClosestByPath(targets);
+                if (!target) {
+                    target = targets[0];
                 }
-                // console.log('target: ' + targets[i] + ' | type: ' + targets[i].structureType + ' | priority: ' + targets[i].priority);
-            }
-            targets.sort(function (a, b) {
-                return a.priority - b.priority
-            });
-            // console.log('beep' + targets);
-            //MOVE TO TARGET
-            if (targets.length) {
-                let target = creep.pos.findClosestByPath(targets.slice(0,3));
-                // console.log('rep: ' + target);
-                if (creep.repair(target) === ERR_NOT_IN_RANGE) {
-                    creep.moveTo(target, {visualizePathStyle: {stroke: '#ffffff'}});
-                }
+                //console.log('target: ' + target + ' | targets: ' + targets);
+                creep.memory.target = target.id;
             } else {
                 roleUpgrader.run(creep);
                 // creep.say('upg.rol');

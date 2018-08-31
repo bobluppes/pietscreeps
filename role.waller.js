@@ -22,10 +22,9 @@ const roleWaller = {
         }
 
         if (creep.memory.target && creep.memory.full) {
-            let target = Game.getObjectById(creep.memory.target);
-            //console.log('rep: ' + target);
-            if (creep.repair(target) === ERR_NOT_IN_RANGE) {
-                creep.moveTo(target, {visualizePathStyle: {stroke: '#000000'}});
+            //console.log('rep: ' + Game.getObjectById(creep.memory.target));
+            if (creep.repair(Game.getObjectById(creep.memory.target)) === ERR_NOT_IN_RANGE) {
+                creep.moveTo(Game.getObjectById(creep.memory.target), {visualizePathStyle: {stroke: '#000000'}});
             }
         } else if (!creep.memory.target && creep.memory.full) {
             let targets = creep.room.find(FIND_STRUCTURES, {

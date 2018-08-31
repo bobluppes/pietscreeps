@@ -46,7 +46,7 @@ let creepFactory = {
         else if (wallers.length < 2 && room.energyAvailable > MinEnergyToSpawn) {
             Game.spawns['Spawn1'].createBalancedCreep(room.energyAvailable, 'waller');
         }
-        else if (remoteHarvesters.length < 4 && room.energyAvailable > MinEnergyToSpawn) {
+        else if (remoteHarvesters.length < 3 && room.energyAvailable > MinEnergyToSpawn) {
             Game.spawns['Spawn1'].createRemoteHarvesterCreep(room.energyAvailable);
         }
 

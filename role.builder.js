@@ -11,6 +11,7 @@ const roleBuilder = {
 
         if(creep.memory.full && creep.carry.energy === 0) {
             creep.memory.full = false;
+            creep.clearGetEnergyTargets();
             creep.say('🔄 get');
         }
         if(!creep.memory.full && creep.carry.energy === creep.carryCapacity) {
@@ -18,7 +19,7 @@ const roleBuilder = {
             creep.say('🚧 build');
             creep.clearGetEnergyTargets();
         }
-        if(creep.memory.full) {
+        if (creep.memory.full) {
             let targets = creep.room.find(FIND_CONSTRUCTION_SITES);
             // Memory.constructionAvailable = targets.length;
 

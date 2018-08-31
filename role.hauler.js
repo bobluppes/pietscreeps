@@ -17,7 +17,7 @@ const roleHauler = {
         }
         if(!creep.memory.full && creep.carry.energy === creep.carryCapacity) {
             creep.memory.full = true;
-            creep.clearGetEnergyTargets();
+
             creep.say('💯');
         }
 
