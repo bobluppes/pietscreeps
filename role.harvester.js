@@ -4,23 +4,14 @@ const roleHarvester = {
     /** @param {Creep} creep **/
     run: function(creep) {
 
-        // let avgHits = creep.avgHits(STRUCTURE_WALL);
-        // console.log('bieb ' + avgHits);
+        // let structureTypeAvgHits = creep.structureTypeAvgHits(STRUCTURE_WALL);
+        // console.log('bieb ' + structureTypeAvgHits);
 
         creep.identify();
 
-        if(creep.memory.full && creep.carry.energy === 0) {
-            creep.memory.full = false;
-            creep.memory.target = false;
-            creep.say('🔄 get');
-        }
-        if(!creep.memory.full && creep.carry.energy === creep.carryCapacity) {
-            creep.memory.full = true;
-            creep.clearGetEnergyTargets();
-            creep.say('💯');
-        }
+        creep.fullState();
 
-        if(creep.memory.full) {
+        if (creep.memory.full) {
             // let priority = ['spawn', 'extension', 'container', ]
             let targets = creep.room.find(FIND_MY_STRUCTURES, {
                 filter: (s) => {
@@ -55,12 +46,12 @@ const roleHarvester = {
             });
 
             //MOVE TO TARGET
-            if(targets.length) {
+            if (targets.length) {
                 // console.log('typeOf ' + typeof targets + ' : ' + targets);
                 let target = creep.pos.findClosestByPath(targets.slice(0,2)); // kies the closest target
                 // console.log('target ' + target + ' targets ' + targets);
                 // console.log(creep.name + 'target: ' + target + ' | type: ' + target.structureType + ' | priority: ' + target.priority);
-                if(creep.transfer(target, RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
+                if (creep.transfer(target, RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
                     creep.moveTo(target, {visualizePathStyle: {stroke: '#0000ff'}});
                 }
             } else {

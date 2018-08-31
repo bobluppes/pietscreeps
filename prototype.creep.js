@@ -15,7 +15,7 @@ Creep.prototype.getEnergy =
                 if (this.withdraw(Game.getObjectById(this.memory.target), RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
                     this.moveTo(Game.getObjectById(this.memory.target), {visualizePathStyle: {stroke: '#0bff00'}});
                 } else if (this.withdraw(Game.getObjectById(this.memory.target), RESOURCE_ENERGY) === ERR_NOT_ENOUGH_RESOURCES) {
-                    this.clearGetEnergyTargets();
+                    this.clearTargets();
                 }
             } else {
                 storage = this.pos.findClosestByPath(FIND_STRUCTURES, {
@@ -33,7 +33,7 @@ Creep.prototype.getEnergy =
                 if (this.withdraw(Game.getObjectById(this.memory.target), RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
                     this.moveTo(Game.getObjectById(this.memory.target), {visualizePathStyle: {stroke: '#0bff00'}});
                 } else if (this.withdraw(Game.getObjectById(this.memory.target), RESOURCE_ENERGY) === ERR_NOT_ENOUGH_RESOURCES) {
-                    this.clearGetEnergyTargets();
+                    this.clearTargets();
                 }
             } else {
                 switch (this.memory.role) {
@@ -64,7 +64,7 @@ Creep.prototype.getEnergy =
                 if (this.harvest(Game.getObjectById(this.memory.target)) === ERR_NOT_IN_RANGE) {
                     this.moveTo(Game.getObjectById(this.memory.target), {visualizePathStyle: {stroke: '#00ff23'}});
                 } else if (this.harvest(Game.getObjectById(this.memory.target)) === ERR_NOT_ENOUGH_RESOURCES) {
-                    this.clearGetEnergyTargets();
+                    this.clearTargets();
                 }
             } else {
                 source = this.pos.findClosestByPath(FIND_SOURCES_ACTIVE)
@@ -80,18 +80,24 @@ Creep.prototype.getEnergy =
 
 /** @function
  */
-Creep.prototype.clearGetEnergyTargets =
+Creep.prototype.clearTargets =
     function () {
         this.memory.target = false;
         delete this.memory.storage;
         delete this.memory.container;
         delete this.memory.source;
+
+        delete  this.memory.buildTarget;
+        //delete  this.memory.harvestTarget;
+        delete  this.memory.haulTarget;
+        delete  this.memory.repairTarget;
+        delete  this.memory.wallTarget;
     };
 
 /** @function
  @param {string} structureType
  */
-Creep.prototype.avgHits =
+Creep.prototype.structureTypeAvgHits =
     function (structureType) {
 
         let hitsTot = 0;
@@ -104,6 +110,20 @@ Creep.prototype.avgHits =
             hitsTot += structures[structure].hits
         }
         return hitsTot/structures.length
+    };
+
+Creep.prototype.fullState =
+    function () {
+        if (this.memory.full && this.carry.energy === 0) {
+            this.memory.full = false;
+            this.clearTargets();
+            this.say('🔄');
+        }
+        if (!this.memory.full && this.carry.energy === this.carryCapacity) {
+            this.memory.full = true;
+            this.clearTargets();
+            this.say('💯');
+        }
     };
 
 

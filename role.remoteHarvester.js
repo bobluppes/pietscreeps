@@ -4,9 +4,6 @@ const roleRemoteHarvester = {
 
     /** @param {Creep} creep */
     run: function(creep) {
-
-        creep.identify();
-
         //INIT
         creep.memory.home = Game.spawns['Spawn1'].room.name;
         creep.memory.sourceIndex = [0];
@@ -26,7 +23,7 @@ const roleRemoteHarvester = {
         else if (!creep.memory.full && creep.carry.energy === creep.carryCapacity) {
             // switch state
             creep.memory.full = true;
-            creep.clearGetEnergyTargets();
+            creep.memory.target = false;
         }
 
         if (creep.memory.full) {
@@ -60,7 +57,59 @@ const roleRemoteHarvester = {
     }
 };
 
-module.exports = roleRemoteHarvester;
+// //noob code die ik online gevonden heb om onze remote unit op te basen
+//
+// let roleRemoteHarvester = {
+//
+//     /** @param {Creep} creep */
+//     run: function(creep) {
+//
+//
+//
+//         //INIT
+//         creep.memory.home = Game.spawns['Spawn1'].room.name;
+//         creep.memory.sourceIndex = [0];
+//         let flag = Game.flags['remoteHarvest1'];
+//         // console.log('target rH: ' + flag + ", " + flag.name);
+//         if (flag && !creep.memory.targetFlag) {
+//             creep.memory.targetFlag = flag.name;
+//         }
+//
+//         creep.identify();
+//         creep.fullState();
+//
+//         if (creep.memory.full) {
+//             // Go back to home room & store energy
+//             // find exit to home room
+//             if (creep.room.name === creep.memory.home) {
+//                 let structure = creep.room.storage;
+//
+//                 if (structure && creep.transfer(structure, RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
+//                     creep.moveTo(structure);
+//                 }
+//
+//             } else {
+//                 // find exit to home room
+//                 let exit = creep.room.findExitTo(creep.memory.home);
+//                 // and move to exit
+//                 creep.moveTo(creep.pos.findClosestByRange(exit));
+//             }
+//         } else {
+//             let flagName = creep.memory.targetFlag;
+//             if (flagName) {
+//                 let targetFlag = Game.flags[flagName];
+//                 // console.log(flagName + ", " + targetFlag);
+//                 if (targetFlag && creep.room !== targetFlag.room) {
+//                     creep.moveTo(targetFlag);
+//                 } else {
+//                     creep.getEnergy(false, false, true);
+//                 }
+//             }
+//         }
+//     }
+// };
+//
+// module.exports = roleRemoteHarvester;
 
 
 // const roleRemoteHarvester = {
