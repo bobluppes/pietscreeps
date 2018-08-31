@@ -72,8 +72,8 @@ Creep.prototype.getEnergy =
             }
             // console.log('getEnergy source: ' + source);
         }
-        console.log(this.name + ' gets E from: ' + Game.getObjectById(this.memory.target));
-        console.log('source:' + this.memory.source + ' | container: ' + this.memory.container + ' | storage: ' + this.memory.storage);
+        //console.log(this.name + ' gets E from: ' + Game.getObjectById(this.memory.target));
+        //console.log('source:' + this.memory.source + ' | container: ' + this.memory.container + ' | storage: ' + this.memory.storage);
     };
 
 /** @function

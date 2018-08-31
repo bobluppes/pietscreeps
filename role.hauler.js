@@ -1,9 +1,12 @@
 const roleUpgrader = require('role.upgrader');
 
-const roleHauler = {
+let roleHauler = {
+    target: false,
+
     /** @param {Creep} creep **/
     run: function(creep) {
         // creep.memory.home = Game.creeps[creep.name].room.name;
+        //console.log('doel:  '+ roleHauler.target + ' pers: ' + roleHauler.persistent);
 
         //Identification
         if (Game.time % 5 === 0) {
@@ -12,12 +15,12 @@ const roleHauler = {
 
         if(creep.memory.full && creep.carry.energy === 0) {
             creep.memory.full = false;
-            creep.memory.target = false;
+            creep.clearGetEnergyTargets();
             creep.say('🔄 filling');
         }
         if(!creep.memory.full && creep.carry.energy === creep.carryCapacity) {
             creep.memory.full = true;
-
+            creep.clearGetEnergyTargets();
             creep.say('💯');
         }
 
@@ -42,7 +45,7 @@ const roleHauler = {
                     );
                 }
             });
-            if (targets) {
+            if (targets.length) {
                 for (let i = 0; i < targets.length; i++) {
                     // console.log('targett: ' + targets[target].structureType);
                     if (targets[i].energy < targets[i].energyCapacity) {
@@ -77,6 +80,7 @@ const roleHauler = {
                 }
                 //console.log('target: ' + target + ' | targets: ' + targets);
                 creep.memory.target = target.id;
+                roleHauler.target = target.id;
             } else {
                 roleUpgrader.run(creep);
             }

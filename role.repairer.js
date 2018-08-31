@@ -24,8 +24,9 @@ const roleRepairer = {
             creep.clearGetEnergyTargets();
             creep.say('💯');
         }
+
         if (creep.memory.target && creep.memory.full) {
-            //console.log('rep: ' + Game.getObjectById(creep.memory.target));
+            console.log('REP:::: ' + Game.getObjectById(creep.memory.target));
             if (creep.repair(creep.memory.target) === ERR_NOT_IN_RANGE) {
                 creep.moveTo(creep.memory.target, {visualizePathStyle: {stroke: '#ffffff'}});
             }
@@ -40,7 +41,7 @@ const roleRepairer = {
                     )   // DIT FILTER MOET ONDERSCHEID MAKEN TUSSEN CONTAINERS, WALL en RAMPARTS VOOR HOEVEEL HITS HIJ GEREPT MOET WORDEN
                 }
             });
-            if (targets) {
+            if (targets.length) {
                 for (let i = 0; i < targets.length; i++) {
                     switch (targets[i].structureType) {
                         case 'container':
@@ -85,7 +86,6 @@ const roleRepairer = {
             // creep.say('+.gE');
             creep.getEnergy(true, true, true);
         }
-
     }
 };
 
