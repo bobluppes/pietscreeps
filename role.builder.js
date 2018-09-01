@@ -19,14 +19,12 @@ let roleBuilder = {
             //console.log(' | targets: ' + targets);
             if (targets.length) {
                 assignPriority(targets, 'tower', 'extension', 'container', 'road', 'constructedWall');
-                prioritize(targets);
-
-                let target = creep.pos.findClosestByPath(targets);
-                if (!target) {
-                    target = targets[0];
-                }
+                prioritizeType(targets);
+                creep.findClosest(targets);
                 //console.log('target: ' + target + ' | targets: ' + targets);
                 creep.memory.buildTarget = target.id;
+                creep.memory.targetName = target.structureType;
+
             } else {
                 roleRepairer.run(creep);
             }

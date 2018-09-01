@@ -94,7 +94,7 @@ StructureSpawn.prototype.createRemoteHarvesterCreep =
         for (let i = 0; i < numberOfParts*2; i++) {
             body.push(MOVE);
         }
-        console.log(body);
+        //console.log(body);
         // CREATE CREEP WITH THE CREATED BODY AND THE GIVEN ROLE
         return this.spawnCreep(body, newName, {memory: {role: 'remoteHarvester', full: false, home: this.room.name}});
     };

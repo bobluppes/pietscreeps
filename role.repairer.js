@@ -7,19 +7,22 @@ let roleRepairer = {
         creep.fullState();
 
         if (creep.memory.repairTarget && creep.memory.full) {
-            let target = Game.getObjectById(creep.memory.repairTarget)
-            if (target.hits === target.hitsMax) {
+            let target = Game.getObjectById(creep.memory.repairTarget);
+            //lg(Game.getObjectById(creep.memory.repairTarget));
+            if (target) {
+                if (target.hits === target.hitsMax) {
+                    creep.clearTargets();
+                } else if (creep.repair(target) === ERR_NOT_IN_RANGE) {
+                    creep.moveTo(target, {visualizePathStyle: {stroke: '#ffffff'}});
+                }
+            } else {
                 creep.clearTargets();
-            } else if (creep.repair(target) === ERR_NOT_IN_RANGE) {
-                creep.moveTo(target, {visualizePathStyle: {stroke: '#ffffff'}});
             }
 
         } else if (!creep.memory.repairTarget && creep.memory.full) {
-
             //SETTINGS: HP FALLS BELOW X FROM MAX TO START REPAIRS
             let roadHP = 1000;
             let containerHP = 1000;
-
             let targets = creep.room.find(FIND_STRUCTURES, {
                 filter: (s) => {
                     return (
@@ -32,13 +35,14 @@ let roleRepairer = {
             });
             if (targets.length) {
                 assignPriority(targets, 'container', 'storage', 'road', 'rampart', 'constructedWall');
-                prioritize(targets);
+                prioritizeType(targets);
                 let target = findLowestHits(targets);
-                if (!target) {
-                    target = targets[0];
-                }
+                // if (!target) {
+                //     target = targets[0];
+                // }
                 //console.log('target: ' + target + ' | targets: ' + targets);
                 creep.memory.repairTarget = target.id;
+                creep.memory.targetName = target.structureType;
             } else {
                 roleUpgrader.run(creep);
             }

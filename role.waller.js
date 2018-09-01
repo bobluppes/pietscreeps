@@ -23,6 +23,8 @@ const roleWaller = {
             });
             let target = findLowestHits(targets);
             creep.memory.repairTarget = target.id;
+            creep.memory.targetName = target.structureType;
+
         } else {
             creep.getEnergy(true, true, false);
         }

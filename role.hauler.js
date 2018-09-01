@@ -27,7 +27,7 @@ let roleHauler = {
             });
             if (targets.length) {
                 assignPriority(targets, 'tower', 'extension', 'spawn', 'storage');
-                prioritize(targets);
+                prioritizeType(targets);
 
                 let target = creep.pos.findClosestByPath(targets);
                 if (!target) {
@@ -35,6 +35,8 @@ let roleHauler = {
                 }
                 //console.log('target: ' + target + ' | targets: ' + targets);
                 creep.memory.haulTarget = target.id;
+                creep.memory.targetName = target.structureType;
+
             } else {
                 roleUpgrader.run(creep);
             }

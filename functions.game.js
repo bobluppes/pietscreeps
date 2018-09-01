@@ -1,11 +1,14 @@
-test = function (a) {
-    console.log('test: ' + a)
+lg = function (a) {
+    console.log('log:::' + a)
+};
+
+pry = function () {
+    console.log('>>>>>>>>>TOT HIER')
 };
 
 draaiOm = function(lijst) {
     return lijst.reverse()
 };
-
 
 /** @function
  @param {object} targets
@@ -44,7 +47,7 @@ assignPriority = function (targets, een, twee, drie='', vier='', vijf='') {
 /** @function
  @param {object} targets
  */
-prioritize = function (targets) {
+prioritizeType = function (targets) {
     targets.sort(function (a, b) {
         return a.priority - b.priority
     });

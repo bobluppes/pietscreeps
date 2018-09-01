@@ -1,3 +1,7 @@
+Creep.prototype.lg = function( a) {
+    console.log(this.name + ':::: ' + a)
+};
+
 /** @function
  @param {boolean} useStorage
  @param {boolean} useContainer
@@ -38,6 +42,7 @@ Creep.prototype.getEnergy =
             } else {
                 switch (this.memory.role) {
                     case 'hauler':
+                        //TODO DEZE MOET CONTAINERS VINDEN DIE BIJNA VOL ZITTEN
                         container = this.pos.findClosestByPath(FIND_STRUCTURES, {
                             filter: s => (s.structureType === STRUCTURE_CONTAINER
                                 && s.store[RESOURCE_ENERGY] > this.carryCapacity)
@@ -83,15 +88,15 @@ Creep.prototype.getEnergy =
 Creep.prototype.clearTargets =
     function () {
         this.memory.target = false;
+        this.memory.targetName = false;
+
         delete this.memory.storage;
         delete this.memory.container;
         delete this.memory.source;
 
         delete  this.memory.buildTarget;
-        //delete  this.memory.harvestTarget;
         delete  this.memory.haulTarget;
         delete  this.memory.repairTarget;
-        delete  this.memory.wallTarget;
     };
 
 /** @function
@@ -158,6 +163,22 @@ Creep.prototype.identify =
             }
         }
     };
+
+/** @function
+ @param {object} targets
+ */
+Creep.prototype.findClosest =
+    function (targets) {
+        let target = this.pos.findClosestByPath(targets);
+        //pos.findClosestByPath acts weird if it's only 1 long
+        if (!target) {
+            target = targets[0];
+        }
+        return target
+    };
+
+
+
 
 
 // BOBSHITE
