@@ -3,7 +3,6 @@ const roleUpgrader = require('role.upgrader');
 let roleRepairer = {
     /** @param {Creep} creep **/
     run:function(creep) {
-        //creep.clearTargets();
         creep.identify();
         creep.fullState();
 
@@ -33,41 +32,8 @@ let roleRepairer = {
             });
             if (targets.length) {
                 assignPriority(targets, 'container', 'storage', 'road', 'rampart', 'constructedWall');
-                // for (let i = 0; i < targets.length; i++) {
-                //     switch (targets[i].structureType) {
-                //         case 'container':
-                //             targets[i].priority = 1;
-                //             break;
-                //         case 'storage':
-                //             targets[i].priority = 2;
-                //             break;
-                //         case 'road':
-                //             targets[i].priority = 3;
-                //             break;
-                //         case 'rampart':
-                //             targets[i].priority = 4;
-                //             break;
-                //         case 'constructedWall':
-                //             targets[i].priority = 5;
-                //             break;
-                //         default:
-                //             targets[i].priority = 6;
-                //             break;
-                //     }
-                //     // console.log(creep.name + ' target: ' + targets[i] + ' | type: ' + targets[i].structureType + ' | priority: ' + targets[i].priority);
-                // }
-
-                // targets.sort(function (a, b) {
-                //     return a.priority - b.priority
-                // });
                 prioritize(targets);
-
-                //FIND CLOSEST INSTANCE OF HIGHEST PRIORITY STRUCTURETYPE (vaag als targets maar 1 object heeft)
-                // targets = _.filter(targets, (t) => t.structureType === targets[0].structureType);
-
-                findLowestHits(targets);
-
-                let target = creep.pos.findClosestByPath(targets);
+                let target = findLowestHits(targets);
                 if (!target) {
                     target = targets[0];
                 }

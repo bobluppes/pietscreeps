@@ -22,6 +22,7 @@ StructureSpawn.prototype.createBalancedCreep =
                 body.push(MOVE);
             }
         }
+
         // CREATE CREEP WITH THE CREATED BODY AND THE GIVEN ROLE
         return this.spawnCreep(body, newName, {memory: {role: roleName, full: false, home: this.room.name }});
     };
@@ -74,27 +75,26 @@ StructureSpawn.prototype.createHaulerCreep =
     };
 
 StructureSpawn.prototype.createRemoteHarvesterCreep =
-    //TODO OPSPLITSEN IN REMOTEMINER EN REMOTEHAULER
     function (energy) {
         let newName = 'RemoteHarvester' + Game.time;
         console.log('Spawning new RemoteHarvester: ' + newName);
 
-        let numberOfParts = Math.max(Math.floor(energy/200), 6);
+        let numberOfParts = Math.min(Math.floor(energy/200), 5);
         let body = [];
 
         //WORK PARTS
-        for (let i = 0; i < Math.floor(numberOfParts/3); i++) {
+        for (let i = 0; i < Math.floor(numberOfParts); i++) {
             body.push(WORK);
         }
         // CARRY PARTS
-        for (let i = 0; i < numberOfParts; i++) {
+        for (let i = 0; i < numberOfParts*2; i++) {
             body.push(CARRY);
         }
         // MOVE PARTS
-        for (let i = 0; i < numberOfParts; i++) {
+        for (let i = 0; i < numberOfParts*2; i++) {
             body.push(MOVE);
         }
-
+        console.log(body);
         // CREATE CREEP WITH THE CREATED BODY AND THE GIVEN ROLE
         return this.spawnCreep(body, newName, {memory: {role: 'remoteHarvester', full: false, home: this.room.name}});
     };

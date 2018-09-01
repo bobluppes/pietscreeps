@@ -3,12 +3,7 @@ const roleUpgrader = require('role.upgrader');
 const roleHarvester = {
     /** @param {Creep} creep **/
     run: function(creep) {
-
-        // let structureTypeAvgHits = creep.structureTypeAvgHits(STRUCTURE_WALL);
-        // console.log('bieb ' + structureTypeAvgHits);
-
         creep.identify();
-
         creep.fullState();
 
         if (creep.memory.full) {
@@ -59,7 +54,6 @@ const roleHarvester = {
             }
         }
         if (!creep.memory.full) {
-            // creep.say('haul.gE');
             creep.getEnergy(true, true, true);
         }
     }

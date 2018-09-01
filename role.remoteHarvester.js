@@ -56,6 +56,8 @@ const roleRemoteHarvester = {
         }
     }
 };
+module.exports = roleRemoteHarvester;
+
 
 // //noob code die ik online gevonden heb om onze remote unit op te basen
 //

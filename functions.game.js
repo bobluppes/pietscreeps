@@ -58,7 +58,6 @@ prioritize = function (targets) {
  */
 findLowestHits = function (targets) {
     let hp = Infinity;
-
     // console.log('avg wall hits: ' + creep.structureTypeAvgHits(STRUCTURE_WALL) + ' wall targets: ' + targets);
     for (let i = 0; i < targets.length; i++) {
         // console.log(targets[i]);
