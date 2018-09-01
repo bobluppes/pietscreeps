@@ -67,7 +67,7 @@ Creep.prototype.getEnergy =
                     this.clearTargets();
                 }
             } else {
-                source = this.pos.findClosestByPath(FIND_SOURCES_ACTIVE)
+                source = this.pos.findClosestByPath(FIND_SOURCES_ACTIVE);
                 if (source) {
                     this.memory.source = this.memory.target = source.id;
                 }
