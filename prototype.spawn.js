@@ -99,6 +99,16 @@ StructureSpawn.prototype.createRemoteHarvesterCreep =
         return this.spawnCreep(body, newName, {memory: {role: 'remoteHarvester', full: false, home: this.room.name}});
     };
 
+StructureSpawn.prototype.createClaimerCreep =
+    function (energy) {
+        let newName = 'Claimer' + Game.time;
+        console.log('Spawning new claimer: ' + newName);
+
+        let body = [CLAIM, MOVE, MOVE];
+
+        // CREATE CREEP WITH THE CREATED BODY AND THE GIVEN ROLE
+        return this.spawnCreep(body, newName, {memory: {role: 'hauler', full: false, home: this.room.name}});
+    };
 
 //BOBSHITE
 

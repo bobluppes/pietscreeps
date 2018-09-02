@@ -17,7 +17,7 @@ Creep.prototype.getEnergy =
             //console.log('YEET:::: ' + this.memory.storage);
             if (this.memory.storage) {
                 if (this.withdraw(Game.getObjectById(this.memory.target), RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
-                    this.moveTo(Game.getObjectById(this.memory.target), {visualizePathStyle: {stroke: '#0bff00'}});
+                    this.moveTo(Game.getObjectById(this.memory.target), {reusePath: 10, visualizePathStyle: {stroke: '#0bff00'}});
                 } else if (this.withdraw(Game.getObjectById(this.memory.target), RESOURCE_ENERGY) === ERR_NOT_ENOUGH_RESOURCES) {
                     this.clearTargets();
                 }
@@ -35,7 +35,7 @@ Creep.prototype.getEnergy =
         if (useContainer && !this.memory.storage) {
             if (this.memory.container) {
                 if (this.withdraw(Game.getObjectById(this.memory.target), RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
-                    this.moveTo(Game.getObjectById(this.memory.target), {visualizePathStyle: {stroke: '#0bff00'}});
+                    this.moveTo(Game.getObjectById(this.memory.target), {reusePath: 10, visualizePathStyle: {stroke: '#0bff00'}});
                 } else if (this.withdraw(Game.getObjectById(this.memory.target), RESOURCE_ENERGY) === ERR_NOT_ENOUGH_RESOURCES) {
                     this.clearTargets();
                 }
@@ -67,7 +67,7 @@ Creep.prototype.getEnergy =
         if (useSource && !this.memory.container && !this.memory.storage) {
             if (this.memory.source) {
                 if (this.harvest(Game.getObjectById(this.memory.target)) === ERR_NOT_IN_RANGE) {
-                    this.moveTo(Game.getObjectById(this.memory.target), {visualizePathStyle: {stroke: '#00ff23'}});
+                    this.moveTo(Game.getObjectById(this.memory.target), {reusePath: 10, visualizePathStyle: {stroke: '#00ff23'}});
                 } else if (this.harvest(Game.getObjectById(this.memory.target)) === ERR_NOT_ENOUGH_RESOURCES) {
                     this.clearTargets();
                 }
