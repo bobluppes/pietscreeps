@@ -1,25 +1,24 @@
 //Behaviour for different creep types
 let roles = {
-    //getEnergy                                           pink
     // CONTROL
     claimer: require('role.claimer'),
-    //Economy income
+    //ECONOMY INCOME
     harvester: require('role.harvester'),                //blue
     remoteHarvester: require('role.remoteHarvester'),
     miner: require('role.miner'),
-    //Logistics
+    //LOGISTICS
     hauler: require('role.hauler'),                       //red
-    //Upkeep
+    //UPKEEP
     upgrader: require('role.upgrader'),                   //orange
     builder: require('role.builder'),                     //yellow
     repairer: require('role.repairer'),                   //white
     waller: require('role.waller'),                       //black
-    //Defence
+    //DEFENCE
     roleTower: require('role.tower'),
     //protector: require('role.protector')
 };
 
-//Load in prototypes
+//LOAD IN PROTOTYPES
 require('prototype.creep');
 require('prototype.spawn');
 require('prototype.tower');
@@ -27,10 +26,10 @@ require('prototype.tower');
 //CUSTOM FUNCTIONS
 require('functions.game');
 
-//Creep factory to spawn the creeps and auto builder
+//CREEP FACTORY
 let creepFactory = require('creepFactory');
+//UTILITIES
 let logger = require('logger');
-//let autoBuilder = require('autoBuilder');
 let cache = require('cache');
 
 //PROFILER
@@ -39,23 +38,18 @@ profiler.enable();
 
 module.exports.loop = function () {
     profiler.wrap(function() {
-        //Test
-
-        //AutoBuilder
-        //autoBuilder.run();
-
-        //Create the creeps and log game data
-        creepFactory.run();
+        //UTILITIES
         logger.run();
         cache.run();
 
-        //MAKING TOWERS WORK
+        //TOWERS
         let towers = _.filter(Game.structures, s => s.structureType === STRUCTURE_TOWER);
         for (let tower of towers) {
             tower.defend();
         }
 
-        //Creep behaviour
+        //CREEPS
+        creepFactory.run();
         for (let name in Game.creeps) {
           let creep = Game.creeps[name];
           roles[creep.memory.role].run(creep);

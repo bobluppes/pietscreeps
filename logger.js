@@ -1,7 +1,6 @@
 let logger = {
     /** @param {Creep} creep **/
     run: function() {
-
         let {claimers, harvesters, upgraders, builders, repairers, miners, haulers, wallers, remoteHarvesters} = unitCount();
 
         //ENERGY DATA

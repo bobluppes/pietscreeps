@@ -5,9 +5,14 @@ const roleHarvester = {
     run: function(creep) {
         creep.identify();
         creep.fullState();
-
-        if (creep.memory.full) {
-            // let priority = ['spawn', 'extension', 'container', ]
+        if (creep.memory.target && creep.memory.full) {
+            let target = Game.getObjectById(creep.memory.target);
+            if (creep.transfer(target, RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
+                creep.moveTo(target, {visualizePathStyle: {stroke: '#0000ff'}});
+            } else if (creep.transfer(target, RESOURCE_ENERGY) !== OK) {
+                creep.clearTargets();
+            }
+        } else if (!creep.memory.target && creep.memory.full) {
             let targets = creep.room.find(FIND_MY_STRUCTURES, {
                 filter: (s) => {
                     return (
@@ -16,39 +21,13 @@ const roleHarvester = {
                     );
                 }
             });
-
-            for (let i = 0; i < targets.length; i++) {
-                // console.log('targett: ' + targets[target].structureType);
-                if (targets[i].energy < targets[i].energyCapacity) {
-                    switch (targets[i].structureType) {
-                        case 'extension':
-                            targets[i].priority = 1;
-                            break;
-                        case 'spawn':
-                            targets[i].priority = 2;
-                            break;
-                        case 'tower':
-                            targets[i].priority = 3;
-                            break;
-                    }
-                }
-                // console.log('target: ' + targets[i] + ' | type: ' + targets[i].structureType + ' | priority: ' + targets[i].priority);
-            }
-
-            //SORT BY PRIORITY
-            targets.sort(function (a, b) {
-                return a.priority - b.priority
-            });
-
             //MOVE TO TARGET
             if (targets.length) {
-                // console.log('typeOf ' + typeof targets + ' : ' + targets);
-                let target = creep.pos.findClosestByPath(targets.slice(0,2)); // kies the closest target
-                // console.log('target ' + target + ' targets ' + targets);
-                // console.log(creep.name + 'target: ' + target + ' | type: ' + target.structureType + ' | priority: ' + target.priority);
-                if (creep.transfer(target, RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
-                    creep.moveTo(target, {visualizePathStyle: {stroke: '#0000ff'}});
-                }
+                targets = assignPriority(targets, 'extension', 'spawn', 'tower');
+                targets = prioritizeType(targets);
+                let target = creep.findClosest(targets);
+                creep.memory.target = target.id;
+                creep.memory.targetName = target.structureType;
             } else {
                 roleUpgrader.run(creep);
             }
