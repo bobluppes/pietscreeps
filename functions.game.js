@@ -6,8 +6,11 @@ pry = function () {
     console.log('>>>>>>>>>TOT HIER')
 };
 
-draaiOm = function(lijst) {
-    return lijst.reverse()
+/** @function
+ @param {string} targetFlag
+ */
+bouwClaimer = function (targetFlag = 'claimFlag1') {
+    Game.spawns['Spawn2'].createClaimerCreep(targetFlag);
 };
 
 /** @function
@@ -70,4 +73,18 @@ findLowestHits = function (targets) {
         }
     }
     return target
+};
+
+unitCount = function() {
+    let claimers = _.filter(Game.creeps, (creep) => creep.memory.role === 'claimer');
+    let harvesters = _.filter(Game.creeps, (creep) => creep.memory.role === 'harvester');
+    let upgraders = _.filter(Game.creeps, (creep) => creep.memory.role === 'upgrader');
+    let builders = _.filter(Game.creeps, (creep) => creep.memory.role === 'builder');
+
+    let repairers = _.filter(Game.creeps, (creep) => creep.memory.role === 'repairer');
+    let miners = _.filter(Game.creeps, (creep) => creep.memory.role === 'miner');
+    let haulers = _.filter(Game.creeps, (creep) => creep.memory.role === 'hauler');
+    let wallers = _.filter(Game.creeps, (creep) => creep.memory.role === 'waller');
+    let remoteHarvesters = _.filter(Game.creeps, (creep) => creep.memory.role === 'remoteHarvester');
+    return {claimers, harvesters, upgraders, builders, repairers, miners, haulers, wallers, remoteHarvesters}
 };

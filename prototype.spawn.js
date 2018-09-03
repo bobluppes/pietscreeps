@@ -100,31 +100,33 @@ StructureSpawn.prototype.createRemoteHarvesterCreep =
     };
 
 StructureSpawn.prototype.createClaimerCreep =
-    function (energy) {
+    //costs 700 energy
+    function (targetFlag) {
         let newName = 'Claimer' + Game.time;
         console.log('Spawning new claimer: ' + newName);
 
         let body = [CLAIM, MOVE, MOVE];
 
         // CREATE CREEP WITH THE CREATED BODY AND THE GIVEN ROLE
-        return this.spawnCreep(body, newName, {memory: {role: 'hauler', full: false, home: this.room.name}});
+        return this.spawnCreep(body, newName, {memory: {role: 'claimer',targetFlag: targetFlag, full: false, home: this.room.name}});
     };
 
 //BOBSHITE
 
-StructureSpawn.prototype.getPopulation = function(role) {
-  switch (role) {
-    case 'harvesters': return _.filter(Game.creeps, (creep) => creep.memory.role == 'harvester').length;break;
-    case 'remoteHarvesters': return _.filter(Game.creeps, (creep) => creep.memory.role == 'remoteHarvester').length;break;
-    case 'miners': return _.filter(Game.creeps, (creep) => creep.memory.role == 'miner').length;break;
-    case 'haulers': return _.filter(Game.creeps, (creep) => creep.memory.role == 'hauler').length;break;
-    case 'upgraders': return _.filter(Game.creeps, (creep) => creep.memory.role == 'upgrader').length;break;
-    case 'builders': return _.filter(Game.creeps, (creep) => creep.memory.role == 'builder').length;break;
-    case 'repairers': return _.filter(Game.creeps, (creep) => creep.memory.role == 'repairer').length;break;
-    case 'wallers': return _.filter(Game.creeps, (creep) => creep.memory.role == 'waller').length;break;
-    case 'protectors': return _.filter(Game.creeps, (creep) => creep.memory.role == 'protector').length;break;
-  };
-}
+StructureSpawn.prototype.getPopulation =
+    function(role) {
+        switch (role) {
+        case 'harvesters': return _.filter(Game.creeps, (creep) => creep.memory.role == 'harvester').length;break;
+        case 'remoteHarvesters': return _.filter(Game.creeps, (creep) => creep.memory.role == 'remoteHarvester').length;break;
+        case 'miners': return _.filter(Game.creeps, (creep) => creep.memory.role == 'miner').length;break;
+        case 'haulers': return _.filter(Game.creeps, (creep) => creep.memory.role == 'hauler').length;break;
+        case 'upgraders': return _.filter(Game.creeps, (creep) => creep.memory.role == 'upgrader').length;break;
+        case 'builders': return _.filter(Game.creeps, (creep) => creep.memory.role == 'builder').length;break;
+        case 'repairers': return _.filter(Game.creeps, (creep) => creep.memory.role == 'repairer').length;break;
+        case 'wallers': return _.filter(Game.creeps, (creep) => creep.memory.role == 'waller').length;break;
+        case 'protectors': return _.filter(Game.creeps, (creep) => creep.memory.role == 'protector').length;break;
+        }
+};
 
 StructureSpawn.prototype.getStructures = function(structureType) {
   switch (structureType) {
@@ -148,7 +150,7 @@ StructureSpawn.prototype.getStructures = function(structureType) {
     case STRUCTURE_CONTAINER: return Game.spawns['Spawn1'].room.find(FIND_STRUCTURES, {filter: {structureType: STRUCTURE_CONTAINER}}).length;break;
     case STRUCTURE_NUKER: return Game.spawns['Spawn1'].room.find(FIND_STRUCTURES, {filter: {structureType: STRUCTURE_NUKER}}).length;break;
   }
-}
+};
 
 StructureSpawn.prototype.getRoomInfo = function(info) {
   switch (info) {
@@ -158,7 +160,7 @@ StructureSpawn.prototype.getRoomInfo = function(info) {
     case 'droppedResources': return Game.spawns['Spawn1'].room.find(FIND_DROPPED_RESOURCES).length;break;
     case 'tombstones': return Game.spawns['Spawn1'].room.find(FIND_TOMBSTONES).length;break;
   }
-}
+};
 
 StructureSpawn.prototype.calcBody = function(role) {
   let body = [];

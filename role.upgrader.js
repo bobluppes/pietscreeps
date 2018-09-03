@@ -3,7 +3,7 @@ const roleUpgrader = {
     run: function(creep) {
         creep.identify();
         creep.fullState();
-        //creep.nm('fuckledeedoo')
+
         //UPGRADE CONTROLLER
         if (creep.memory.full) {
             if (creep.upgradeController(Game.rooms[creep.memory.home].controller) === ERR_NOT_IN_RANGE) {

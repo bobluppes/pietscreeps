@@ -1,16 +1,9 @@
 let creepFactory = {
     run: function() {
 
-        //screep population checking
-        let harvesters = _.filter(Game.creeps, (creep) => creep.memory.role === 'harvester');
-        let upgraders = _.filter(Game.creeps, (creep) => creep.memory.role === 'upgrader');
-        let builders = _.filter(Game.creeps, (creep) => creep.memory.role === 'builder');
 
-        let repairers = _.filter(Game.creeps, (creep) => creep.memory.role === 'repairer');
-        let miners = _.filter(Game.creeps, (creep) => creep.memory.role === 'miner');
-        let haulers = _.filter(Game.creeps, (creep) => creep.memory.role === 'hauler');
-        let wallers = _.filter(Game.creeps, (creep) => creep.memory.role === 'waller');
-        let remoteHarvesters = _.filter(Game.creeps, (creep) => creep.memory.role === 'remoteHarvester');
+        //screep population checking
+        let {claimers, harvesters, upgraders, builders, repairers, miners, haulers, wallers, remoteHarvesters} = unitCount();
 
         //SETTINGS DEPENDING ON GAME STAGE
         let room = Game.spawns['Spawn1'].room;
@@ -21,7 +14,17 @@ let creepFactory = {
         // var energyCap = Game.spawns['Spawn1'].room.energyCapacityAvailable;
         // var containers = Game.spawns['Spawn1'].room.find(FIND_STRUCTURES, {filter: {structureType: STRUCTURE_CONTAINER}})
 
+
+
         //SPAWNING
+
+        for (let spawn in Game.spawns) {
+            if (!Game.spawns[spawn].spawning) {
+                var freeSpawn = Game.spawns[spawn]
+            }
+        }
+        lg(freeSpawn);
+
         if (harvesters.length < 2 && room.energyAvailable > 299) {
             Game.spawns['Spawn1'].createBalancedCreep(room.energyAvailable, 'harvester');
         }
@@ -49,6 +52,13 @@ let creepFactory = {
         else if (remoteHarvesters.length < 4 && room.energyAvailable > MinEnergyToSpawn) {
             Game.spawns['Spawn1'].createRemoteHarvesterCreep(room.energyAvailable);
         }
+
+        //CLAIMER
+        if (Game.rooms['E55N52'].controller.owner === undefined && claimers.length < 1) {
+            Game.spawns['Spawn2'].createClaimerCreep('claimFlag1');
+        }
+
+
 
         if(Game.spawns['Spawn1'].spawning) {
             let spawningCreep = Game.creeps[Game.spawns['Spawn1'].spawning.name];
