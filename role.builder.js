@@ -18,9 +18,9 @@ let roleBuilder = {
             // Memory.constructionAvailable = targets.length;
             //console.log(' | targets: ' + targets);
             if (targets.length) {
-                assignPriority(targets, 'tower', 'extension', 'container', 'road', 'constructedWall');
-                prioritizeType(targets);
-                creep.findClosest(targets);
+                targets = assignPriority(targets, 'tower', 'extension', 'container', 'road', 'constructedWall');
+                targets = prioritizeType(targets);
+                let target = creep.findClosest(targets);
                 //console.log('target: ' + target + ' | targets: ' + targets);
                 creep.memory.buildTarget = target.id;
                 creep.memory.targetName = target.structureType;

@@ -4,7 +4,6 @@ const roleWaller = {
     run:function(creep) {
         creep.identify();
         creep.fullState();
-
         if (creep.memory.repairTarget && creep.memory.full) {
             let target = Game.getObjectById(creep.memory.repairTarget);
             if (target.hits === target.hitsMax) {

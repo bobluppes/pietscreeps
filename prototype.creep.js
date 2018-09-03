@@ -1,5 +1,5 @@
 Creep.prototype.lg = function( a) {
-    console.log(this.name + ':::: ' + a)
+    console.log(this.name + ' :::: ' + a)
 };
 
 /** @function
@@ -105,6 +105,19 @@ Creep.prototype.getDroppedEnergy =
         }
     };
 
+Creep.prototype.fullState =
+    function () {
+        if (this.memory.full && this.carry.energy === 0) {
+            this.memory.full = false;
+            this.clearTargets();
+            this.say('🔄');
+        }
+        if (!this.memory.full && this.carry.energy === this.carryCapacity) {
+            this.memory.full = true;
+            this.clearTargets();
+            this.say('💯');
+        }
+    };
 
 /** @function
  */
@@ -112,6 +125,7 @@ Creep.prototype.clearTargets =
     function () {
         this.memory.target = false;
         this.memory.targetName = false;
+        delete this.memory.targetFlag;
 
         delete this.memory.storage;
         delete this.memory.container;
@@ -141,19 +155,7 @@ Creep.prototype.structureTypeAvgHits =
         return hitsTot/structures.length
     };
 
-Creep.prototype.fullState =
-    function () {
-        if (this.memory.full && this.carry.energy === 0) {
-            this.memory.full = false;
-            this.clearTargets();
-            this.say('🔄');
-        }
-        if (!this.memory.full && this.carry.energy === this.carryCapacity) {
-            this.memory.full = true;
-            this.clearTargets();
-            this.say('💯');
-        }
-    };
+
 
 
 Creep.prototype.identify =

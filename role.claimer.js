@@ -1,13 +1,11 @@
 let roleClaimer = {
     /** @param {Creep} creep **/
     run: function(creep) {
-
         creep.identify();
 
         let targetFlag = Game.flags[creep.memory.targetFlag];
-
         if (targetFlag) {
-            if (targetFlag && creep.room !== targetFlag.room) {
+            if (creep.room !== targetFlag.room) {
                 creep.moveTo(targetFlag);
             } else if (creep.room === targetFlag.room) {
                 let target = targetFlag.room.controller;

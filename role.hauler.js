@@ -5,13 +5,14 @@ let roleHauler = {
     run: function(creep) {
         creep.identify();
         creep.fullState();
-
         if (creep.memory.haulTarget && creep.memory.full) {
             let target = Game.getObjectById(creep.memory.haulTarget);
-            if (creep.transfer(target, RESOURCE_ENERGY) === ERR_FULL) {
-                creep.memory.haulTarget = false;
-            } else if (creep.transfer(target, RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
+            // lg(target);
+
+            if (creep.transfer(target, RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
                 creep.moveTo(target, {visualizePathStyle: {stroke: '#ff0009'}});
+            } else if ( creep.transfer(target, RESOURCE_ENERGY) !== OK) {
+                creep.clearTargets();
             }
         } else if (!creep.memory.haulTarget && creep.memory.full) {
             let targets = creep.room.find(FIND_MY_STRUCTURES, {
@@ -26,27 +27,21 @@ let roleHauler = {
                 }
             });
             if (targets.length) {
-                assignPriority(targets, 'tower', 'extension', 'spawn', 'storage');
-                prioritizeType(targets);
-
-                let target = creep.pos.findClosestByPath(targets);
-                if (!target) {
-                    target = targets[0];
-                }
-                //console.log('target: ' + target + ' | targets: ' + targets);
+                targets = assignPriority(targets, 'tower', 'extension', 'spawn', 'storage');
+                targets = prioritizeType(targets);
+                let target = creep.findClosest(targets);
                 creep.memory.haulTarget = target.id;
                 creep.memory.targetName = target.structureType;
-
             } else {
                 roleUpgrader.run(creep);
             }
         }
         if (!creep.memory.full) {
-            if (!creep.memory.noDropped) {
-                creep.getDroppedEnergy()
-            } else {
+            // if (!creep.memory.noDropped) {
+            //     creep.getDroppedEnergy()
+            // } else {
                 creep.getEnergy(false, true, false);
-            }
+            //}
         }
     }
 };
