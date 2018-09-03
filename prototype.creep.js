@@ -42,12 +42,15 @@ Creep.prototype.getEnergy =
             } else {
                 switch (this.memory.role) {
                     case 'hauler':
-                        //TODO DEZE MOET CONTAINERS VINDEN DIE BIJNA VOL ZITTEN
-                        container = this.pos.findClosestByPath(FIND_STRUCTURES, {
+                        //eerst de bijna volle containers kiezen
+                        let containers = this.room.find(FIND_STRUCTURES, {
                             filter: s => (s.structureType === STRUCTURE_CONTAINER
                                 && s.store[RESOURCE_ENERGY] > this.carryCapacity)
                         });
-                        //this.say('hauler');
+                        container = containers.sort(function (a, b) {
+                            return b.store[RESOURCE_ENERGY] - a.store[RESOURCE_ENERGY]
+                        })[0];
+                        console.log(containers[0] +' > '+ containers[1]);
                         break;
                     default:
                         container = this.pos.findClosestByPath(FIND_STRUCTURES, {
@@ -83,6 +86,26 @@ Creep.prototype.getEnergy =
         //console.log('source:' + this.memory.source + ' | container: ' + this.memory.container + ' | storage: ' + this.memory.storage);
     };
 
+Creep.prototype.getDroppedEnergy =
+    function () {
+        if (this.memory.target) {
+            if (this.pickup(Game.getObjectById(this.memory.target)) === ERR_NOT_IN_RANGE) {
+                this.moveTo(Game.getObjectById(this.memory.target));
+            }
+        } else {
+            let dropped = this.pos.findClosestByPath(FIND_DROPPED_ENERGY, {
+                filter: s => ( s.amount > this.carryCapacity)
+            });
+            if (dropped){
+                this.memory.target = dropped.id;
+            }
+            if (!this.memory.target) {
+                this.memory.noDropped = true;
+            }
+        }
+    };
+
+
 /** @function
  */
 Creep.prototype.clearTargets =
@@ -93,6 +116,7 @@ Creep.prototype.clearTargets =
         delete this.memory.storage;
         delete this.memory.container;
         delete this.memory.source;
+        delete this.memory.noDropped;
 
         delete  this.memory.buildTarget;
         delete  this.memory.haulTarget;
