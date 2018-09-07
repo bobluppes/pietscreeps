@@ -10,7 +10,7 @@ const roleRemoteHarvester = {
 		if (flag && !creep.memory.targetFlag) {
 			creep.memory.targetFlag = flag.name;
 		}
-
+		creep.identify();
 		creep.fullState();
 
 		if (creep.memory.full) {

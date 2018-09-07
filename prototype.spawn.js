@@ -7,7 +7,7 @@ StructureSpawn.prototype.createBalancedCreep =
 		let firstOfItsKind = (_.filter(Game.creeps, (creep) => creep.memory.role === roleName).length === 0);
 		let body = [];
 
-		if (firstOfItsKind) {
+		if (firstOfItsKind && roleName !== 'waller') {
 			body = [WORK, CARRY, MOVE];
 			console.log('Queen of the first ' + roleName);
 		} else {
@@ -50,7 +50,7 @@ StructureSpawn.prototype.createMinerCreep =
 		let body = [WORK, WORK, WORK, WORK, WORK, MOVE];
 
 		// CREATE CREEP WITH THE CREATED BODY AND THE GIVEN ROLE
-		return this.spawnCreep(body, newName, {memory: {role: 'miner', full: false, source: assignedSource}});
+		return this.spawnCreep(body, newName, {memory: {role: 'miner', full: false, source: assignedSource, energyOnContainer: true}});
 	};
 
 StructureSpawn.prototype.createHaulerCreep =
@@ -58,7 +58,7 @@ StructureSpawn.prototype.createHaulerCreep =
 		let newName = 'Hauler' + Game.time;
 		console.log('Spawning new hauler: ' + newName);
 
-		let numberOfParts = Math.min(Math.floor(energy/100), 7);
+		let numberOfParts = Math.min(Math.floor(energy/100), 10);
 		let body = [];
 
 		//MAX WORK PARTS
@@ -79,7 +79,7 @@ StructureSpawn.prototype.createRemoteHarvesterCreep =
 		let newName = 'RemoteHarvester' + Game.time;
 		console.log('Spawning new RemoteHarvester: ' + newName);
 
-		let numberOfParts = Math.min(Math.floor(energy/200), 7);
+		let numberOfParts = Math.min(Math.floor(energy/200), 9);
 		let body = [];
 
 		//WORK PARTS

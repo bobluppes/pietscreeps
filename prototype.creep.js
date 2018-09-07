@@ -6,11 +6,21 @@ Creep.prototype.lg = function(a) {
 /** @function
  @param {boolean} useStorage
  @param {boolean} useContainer */
+//TODO: dropped energy for remote harvesters
 Creep.prototype.getEnergy = 	function (useStorage, useContainer) {
+  //this.clearTargets();
 	if (this.memory.target) {
     //console.log(this.name + ' gets E from: ' + Game.getObjectById(this.memory.target));
 		let target = Game.getObjectById(this.memory.target);
-		if (target.structureType === STRUCTURE_STORAGE || target.structureType === STRUCTURE_CONTAINER) {
+		if (target instanceof  Resource) {
+      console.log(this.name + ' gets E from: ' + Game.getObjectById(this.memory.target));
+      if (this.pickup(target) === ERR_NOT_IN_RANGE) {
+        this.moveTo(target, {reusePath: 10, visualizePathStyle: {stroke: '#0bff00'}});
+      }
+      else if (this.pickup(target) !== OK) {
+        this.clearTargets();
+      }
+		} else if (target instanceof  Structure && (target.structureType === STRUCTURE_STORAGE || target.structureType === STRUCTURE_CONTAINER)) {
       if (this.withdraw(target, RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
         this.moveTo(target, {reusePath: 10, visualizePathStyle: {stroke: '#0bff00'}});
       } else if (this.withdraw(target, RESOURCE_ENERGY) === ERR_NOT_ENOUGH_RESOURCES) {
@@ -27,23 +37,30 @@ Creep.prototype.getEnergy = 	function (useStorage, useContainer) {
 		this.memory.target = this.room.storage.id;
     console.log(this.name + ' chose: ' + Game.getObjectById(this.memory.target));
   } else {
-		let container = false;
+		let target = false;
 		if (useContainer) {
       switch (this.memory.role) {
         case 'hauler':
           let containers = this.room.find(FIND_STRUCTURES, {
-            filter: s => (s.structureType === STRUCTURE_CONTAINER && s.store[RESOURCE_ENERGY] > this.carryCapacity)});
-          container = containers.sort(function (a, b) {
-            return b.store[RESOURCE_ENERGY] - a.store[RESOURCE_ENERGY]})[0];
+            filter: s => (s.structureType === STRUCTURE_CONTAINER && s.store[RESOURCE_ENERGY] > this.carryCapacity)
+          });
+          target = containers.sort(function (a, b) {
+            return b.store[RESOURCE_ENERGY] - a.store[RESOURCE_ENERGY]
+          })[0];
+        	let foundEnergy = target.pos.lookFor(LOOK_ENERGY);
+          if (foundEnergy.length) {
+          	console.log('there is left over energy on my container');
+        		target = foundEnergy[0];
+      		}
           break;
         default:
-          container = this.pos.findClosestByPath(FIND_STRUCTURES, {
+          target = this.pos.findClosestByPath(FIND_STRUCTURES, {
             filter: s => (s.structureType === STRUCTURE_CONTAINER && s.store[RESOURCE_ENERGY] > 0)});
           break;
       }
     }
-		if (container) {
-			this.memory.target = container.id;
+		if (target) {
+			this.memory.target = target.id;
       console.log(this.name + ' chose: ' + Game.getObjectById(this.memory.target));
 		} else {
       let source = this.pos.findClosestByPath(FIND_SOURCES_ACTIVE);
@@ -97,14 +114,12 @@ Creep.prototype.clearTargets =
 		this.memory.targetName = false;
 		delete this.memory.targetFlag;
 
-		// delete this.memory.storage;
-		// delete this.memory.container;
-		// delete this.memory.source;
 		delete this.memory.noDropped;
 
 		delete  this.memory.buildTarget;
 		delete  this.memory.haulTarget;
 		delete  this.memory.repairTarget;
+		this.say('clear');
 	};
 
 /** @function
