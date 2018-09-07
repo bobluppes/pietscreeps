@@ -16,11 +16,22 @@ let creepFactory = {
 
 
 		//SPAWNING
+		//TODO: handle Multiroom
+
+    // for each spawn
+    // for (let spawnName in Game.spawns) {
+    //   // run spawn logic
+    //   Game.spawns[spawnName].spawnCreepsIfNecessary();
+    // }
+
+
 		for (let spawn in Game.spawns) {
 			if (!Game.spawns[spawn].spawning) {
 				var freeSpawn = Game.spawns[spawn]
 			}
 		}
+
+
 		if (harvesters.length < 2 && room.energyAvailable > 299) {
 			Game.spawns['Spawn1'].createBalancedCreep(room.energyAvailable, 'harvester');
 		}

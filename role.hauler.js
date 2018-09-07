@@ -40,7 +40,7 @@ let roleHauler = {
 			// if (!creep.memory.noDropped) {
 			//   creep.getDroppedEnergy()
 			// } else {
-				creep.getEnergy(false, true, false);
+				creep.getEnergy(false, true);
 			//}
 		}
 	}

@@ -2,6 +2,21 @@ const roleMiner = {
 	/** @param {Creep} creep **/
 	run: function (creep) {
 		creep.identify();
+
+		if (!creep.memory.source) {
+      assignSource = function () {
+        let sources = Game.spawns['Spawn1'].room.find(FIND_SOURCES);
+        console.log(sources);
+
+        if (_.filter(Game.creeps, (creep) => creep.memory.source == sources[0].id).length == 0) {
+          return sources[0].id;
+        } else if (_.filter(Game.creeps, (creep) => creep.memory.source == sources[1].id).length == 0) {
+          return sources[1].id;
+        }
+      };
+      creep.memory.source = assignSource();
+		}
+
 		let source = Game.getObjectById(creep.memory.source);
 		// console.log(source);
 		let container;

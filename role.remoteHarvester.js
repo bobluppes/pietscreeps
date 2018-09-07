@@ -31,7 +31,7 @@ const roleRemoteHarvester = {
 				if (creep.room !== targetFlag.room) {
 					creep.moveTo(targetFlag);
 				} else {
-					creep.getEnergy(false, false, true);
+					creep.getEnergy(false, false);
 				}
 			}
 		}

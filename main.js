@@ -41,10 +41,8 @@ module.exports.loop = function () {
 		//UTILITIES
 		logger.run();
 		cache.run();
-
 		//TOWERS
 		let towers = _.filter(Game.structures, s => s.structureType === STRUCTURE_TOWER);
-		lg(_.filter(Game.structures, s => s.structureType === STRUCTURE_WALL));
 		for (let tower of towers) {
 			tower.defend();
 		}
@@ -57,3 +55,4 @@ module.exports.loop = function () {
 		}
 	});
 };
+

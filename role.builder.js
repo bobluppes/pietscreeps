@@ -31,7 +31,7 @@ let roleBuilder = {
 				//roleRepairer.run(creep);
 			}
 		} else {
-			creep.getEnergy(true, true, true);
+			creep.getEnergy(true, true);
 		}
 	}
 };

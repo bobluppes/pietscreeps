@@ -1,90 +1,60 @@
-Creep.prototype.lg = function( a) {
+Creep.prototype.lg = function(a) {
 	console.log(this.name + ' :::: ' + a)
 };
 
+
 /** @function
  @param {boolean} useStorage
- @param {boolean} useContainer
- @param {boolean} useSource */
-Creep.prototype.getEnergy =
-	function (useStorage, useContainer, useSource) {
-
-		let storage = false;
+ @param {boolean} useContainer */
+Creep.prototype.getEnergy = 	function (useStorage, useContainer) {
+	if (this.memory.target) {
+    //console.log(this.name + ' gets E from: ' + Game.getObjectById(this.memory.target));
+		let target = Game.getObjectById(this.memory.target);
+		if (target.structureType === STRUCTURE_STORAGE || target.structureType === STRUCTURE_CONTAINER) {
+      if (this.withdraw(target, RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
+        this.moveTo(target, {reusePath: 10, visualizePathStyle: {stroke: '#0bff00'}});
+      } else if (this.withdraw(target, RESOURCE_ENERGY) === ERR_NOT_ENOUGH_RESOURCES) {
+        this.clearTargets();
+      }
+		} else {
+      if (this.harvest(target) === ERR_NOT_IN_RANGE) {
+        this.moveTo(target, {reusePath: 10, visualizePathStyle: {stroke: '#00ff23'}});
+      } else if (this.harvest(target) === ERR_NOT_ENOUGH_RESOURCES) {
+        this.clearTargets();
+      }
+		}
+  } else if (useStorage && this.room.storage && this.room.storage.store.energy > this.carryCapacity) {
+		this.memory.target = this.room.storage.id;
+    console.log(this.name + ' chose: ' + Game.getObjectById(this.memory.target));
+  } else {
 		let container = false;
-		let source = false;
+		if (useContainer) {
+      switch (this.memory.role) {
+        case 'hauler':
+          let containers = this.room.find(FIND_STRUCTURES, {
+            filter: s => (s.structureType === STRUCTURE_CONTAINER && s.store[RESOURCE_ENERGY] > this.carryCapacity)});
+          container = containers.sort(function (a, b) {
+            return b.store[RESOURCE_ENERGY] - a.store[RESOURCE_ENERGY]})[0];
+          break;
+        default:
+          container = this.pos.findClosestByPath(FIND_STRUCTURES, {
+            filter: s => (s.structureType === STRUCTURE_CONTAINER && s.store[RESOURCE_ENERGY] > 0)});
+          break;
+      }
+    }
+		if (container) {
+			this.memory.target = container.id;
+      console.log(this.name + ' chose: ' + Game.getObjectById(this.memory.target));
+		} else {
+      let source = this.pos.findClosestByPath(FIND_SOURCES_ACTIVE);
+      if (source) {
+        this.memory.target = source.id;
+        console.log(this.name + ' chose: ' + Game.getObjectById(this.memory.target));
+      }
+		}
+	}
 
-		if (useStorage) {
-			//console.log('YEET:::: ' + this.memory.storage);
-			if (this.memory.storage) {
-				if (this.withdraw(Game.getObjectById(this.memory.target), RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
-					this.moveTo(Game.getObjectById(this.memory.target), {reusePath: 10, visualizePathStyle: {stroke: '#0bff00'}});
-				} else if (this.withdraw(Game.getObjectById(this.memory.target), RESOURCE_ENERGY) === ERR_NOT_ENOUGH_RESOURCES) {
-					this.clearTargets();
-				}
-			} else {
-				storage = this.pos.findClosestByPath(FIND_STRUCTURES, {
-					filter: s => ( s.structureType === STRUCTURE_STORAGE
-						&& s.store[RESOURCE_ENERGY] > 0)
-				});
-				if (storage) {
-					this.memory.storage = this.memory.target = storage.id;
-				}
-			}
-			// console.log('gE.' + this.memory.role + ':' + storage);
-		}
-		if (useContainer && !this.memory.storage) {
-			if (this.memory.container) {
-				if (this.withdraw(Game.getObjectById(this.memory.target), RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
-					this.moveTo(Game.getObjectById(this.memory.target), {reusePath: 10, visualizePathStyle: {stroke: '#0bff00'}});
-				} else if (this.withdraw(Game.getObjectById(this.memory.target), RESOURCE_ENERGY) === ERR_NOT_ENOUGH_RESOURCES) {
-					this.clearTargets();
-				}
-			} else {
-				switch (this.memory.role) {
-					case 'hauler':
-						//eerst de bijna volle containers kiezen
-						let containers = this.room.find(FIND_STRUCTURES, {
-							filter: s => (s.structureType === STRUCTURE_CONTAINER
-								&& s.store[RESOURCE_ENERGY] > this.carryCapacity)
-						});
-						container = containers.sort(function (a, b) {
-							return b.store[RESOURCE_ENERGY] - a.store[RESOURCE_ENERGY]
-						})[0];
-						console.log(containers[0] +' > '+ containers[1]);
-						break;
-					default:
-						container = this.pos.findClosestByPath(FIND_STRUCTURES, {
-							filter: s => (s.structureType === STRUCTURE_CONTAINER
-								&& s.store[RESOURCE_ENERGY] > 0)
-						});
-						// this.say('def');
-						break;
-				}
-				if (container) {
-					this.memory.container = this.memory.target = container.id;
-				}
-			}
-			// console.log('gE.' + this.memory.role + ':' + container);
-		}
-		//FINALLY SOURCES
-		if (useSource && !this.memory.container && !this.memory.storage) {
-			if (this.memory.source) {
-				if (this.harvest(Game.getObjectById(this.memory.target)) === ERR_NOT_IN_RANGE) {
-					this.moveTo(Game.getObjectById(this.memory.target), {reusePath: 10, visualizePathStyle: {stroke: '#00ff23'}});
-				} else if (this.harvest(Game.getObjectById(this.memory.target)) === ERR_NOT_ENOUGH_RESOURCES) {
-					this.clearTargets();
-				}
-			} else {
-				source = this.pos.findClosestByPath(FIND_SOURCES_ACTIVE);
-				if (source) {
-					this.memory.source = this.memory.target = source.id;
-				}
-			}
-			// console.log('getEnergy source: ' + source);
-		}
-		//console.log(this.name + ' gets E from: ' + Game.getObjectById(this.memory.target));
-		//console.log('source:' + this.memory.source + ' | container: ' + this.memory.container + ' | storage: ' + this.memory.storage);
-	};
+};
 
 Creep.prototype.getDroppedEnergy =
 	function () {
@@ -127,9 +97,9 @@ Creep.prototype.clearTargets =
 		this.memory.targetName = false;
 		delete this.memory.targetFlag;
 
-		delete this.memory.storage;
-		delete this.memory.container;
-		delete this.memory.source;
+		// delete this.memory.storage;
+		// delete this.memory.container;
+		// delete this.memory.source;
 		delete this.memory.noDropped;
 
 		delete  this.memory.buildTarget;
