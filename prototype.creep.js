@@ -16,9 +16,9 @@ Creep.prototype.getEnergy = 	function (useStorage, useContainer) {
       console.log(this.name + ' gets E from: ' + Game.getObjectById(this.memory.target));
       if (this.pickup(target) === ERR_NOT_IN_RANGE) {
         this.moveTo(target, {reusePath: 10, visualizePathStyle: {stroke: '#0bff00'}});
-      }
-      else if (this.pickup(target) !== OK) {
+      } else if (this.pickup(target) !== OK) {
         this.clearTargets();
+        console.log('hauler clear energy target');
       }
 		} else if (target instanceof  Structure && (target.structureType === STRUCTURE_STORAGE || target.structureType === STRUCTURE_CONTAINER)) {
       if (this.withdraw(target, RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {

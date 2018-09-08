@@ -7,11 +7,11 @@ StructureSpawn.prototype.createBalancedCreep =
 		let firstOfItsKind = (_.filter(Game.creeps, (creep) => creep.memory.role === roleName).length === 0);
 		let body = [];
 
-		if (firstOfItsKind && roleName !== 'waller') {
+		if (firstOfItsKind && roleName === 'harvester') {
 			body = [WORK, CARRY, MOVE];
 			console.log('Queen of the first ' + roleName);
 		} else {
-			let numberOfParts = Math.min(Math.floor(energy / 200), 7);
+			let numberOfParts = Math.min(Math.floor(energy / 200), 8);
 			for (let i = 0; i < numberOfParts; i++) {
 				body.push(WORK);
 			}
@@ -36,9 +36,9 @@ StructureSpawn.prototype.createMinerCreep =
 			let sources = Game.spawns['Spawn1'].room.find(FIND_SOURCES);
 			console.log(sources);
 
-			if (_.filter(Game.creeps, (creep) => creep.memory.source == sources[0].id).length == 0) {
+			if (_.filter(Game.creeps, (creep) => creep.memory.source === sources[0].id).length === 0) {
 				return sources[0].id;
-			} else if (_.filter(Game.creeps, (creep) => creep.memory.source == sources[1].id).length == 0) {
+			} else if (_.filter(Game.creeps, (creep) => creep.memory.source === sources[1].id).length === 0) {
 				return sources[1].id;
 			}
 		};

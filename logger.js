@@ -12,6 +12,10 @@ let logger = {
 			console.log('>>Energy in room ' + name + ': ' + energyAvailable + "/" + energyCap);
 			console.log('>>Harvesters: ' + harvesters.length,' | Upgraders: ' + upgraders.length, ' | Builders: ' + builders.length,' | Repairers: ' + repairers.length,' | Miners: ' + miners.length,' | Haulers: ' + haulers.length,' | Wallers: ' + wallers.length, ' | remoteHarvesters: ' + remoteHarvesters.length,' | claimers: ' + claimers.length);
 		}
+
+		//average netto energy
+    //Game.spawns['Spawn1'].room.storage.store.energy
+
 	}
 };
 
