@@ -36,9 +36,14 @@ let cache = require('cache');
 const profiler = require('screeps-profiler');
 profiler.enable();
 
+Game.spawns['Spawn1'].containerLR();
+
+
 module.exports.loop = function () {
 	profiler.wrap(function() {
 		//UTILITIES
+
+    Game.spawns['Spawn1'].containerLR();
 		logger.run();
 		cache.run();
 		//TOWERS

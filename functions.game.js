@@ -109,16 +109,4 @@ getPopulation = function(role) {
 	}
 	};
 
-containerLR = function () {
 
-
-	let containers = _.filter(Game.structures, s => s.structureType === STRUCTURE_CONTAINER);
-
-	lg(containers);
-	containers.sort(function (a, b) {
-	return a.pos.x - b.pos.x
-	});
-	lg(containers);
-	//containers[0].memory.side = 'Right';
-	//containers[1].memory.side = 'Left';
-};

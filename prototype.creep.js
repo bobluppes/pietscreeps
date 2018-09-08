@@ -113,7 +113,6 @@ Creep.prototype.clearTargets =
 		this.memory.target = false;
 		this.memory.targetName = false;
 		delete this.memory.targetFlag;
-
 		delete this.memory.noDropped;
 
 		delete  this.memory.buildTarget;

@@ -5,6 +5,7 @@ let roleHauler = {
 	run: function(creep) {
 		creep.identify();
 		creep.fullState();
+		lg('ew' + Game.getObjectById(creep.memory.target));
 		if (creep.memory.haulTarget && creep.memory.full) {
 			let target = Game.getObjectById(creep.memory.haulTarget);
 			// lg(target);

@@ -113,7 +113,6 @@ StructureSpawn.prototype.createClaimerCreep =
 
 StructureSpawn.prototype.containerLR = function () {
 
-
 	let containers = this.room.find(FIND_STRUCTURES, {
 		filter: (s) => {
 			return (
@@ -127,9 +126,11 @@ StructureSpawn.prototype.containerLR = function () {
 		return a.pos.x - b.pos.x
 	});
 	lg(containers);
-	Memory.rightContainer = containers[0];
-	Memory.leftContainer  = containers[1];
+	containers[0].memory.name = "Links";
+  containers[1].memory.name = "Rechts";
 };
+
+
 
 //BOBSHITE
 
