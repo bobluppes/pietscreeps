@@ -27,7 +27,7 @@ let creepFactory = {
 		else if (miners.length < 2 && room.energyAvailable > 550) {
 			Game.spawns['Spawn1'].createMinerCreep();
 		}
-		else if (miners.length < 2 && room.energyAvailable > 700) {
+		else if (haulers.length < 2 && room.energyAvailable > 700) {
 			Game.spawns['Spawn1'].createHaulerCreep(room.energyAvailable);
 		}
 		else if (upgraders.length < 2 && room.energyAvailable > MinEnergyToSpawn) {
@@ -48,14 +48,14 @@ let creepFactory = {
 		else if (wallers.length < 2 && room.energyAvailable > MinEnergyToSpawn) {
 			Game.spawns['Spawn1'].createBalancedCreep(room.energyAvailable, 'waller');
 		}
-		else if (remoteHarvesters.length < 4 && room.energyAvailable > MinEnergyToSpawn) {
+		else if (remoteHarvesters.length < 0 && room.energyAvailable > MinEnergyToSpawn) {
 			Game.spawns['Spawn1'].createRemoteHarvesterCreep(room.energyAvailable);
 		}
 
 		//CLAIMER
-		if (Game.rooms['E55N52'] === undefined && claimers.length < 1) {
-			Game.spawns['Spawn2'].createClaimerCreep('claimFlag1');
-		}
+		// if (Game.rooms['E55N52'] === undefined && claimers.length < 1) {
+		// 	Game.spawns['Spawn2'].createClaimerCreep('claimFlag1');
+		// }
 
 		if(Game.spawns['Spawn1'].spawning) {
 			let spawningCreep = Game.creeps[Game.spawns['Spawn1'].spawning.name];
