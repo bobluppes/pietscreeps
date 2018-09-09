@@ -80,6 +80,21 @@ findLowestHits = function (targets) {
 	return target
 };
 
+roomPopulation = function(room) {
+  let claimers = _.filter(Game.creeps, (creep) => (creep.memory.role === 'claimer' && creep.memory.home === room.name)).length;
+  let harvesters = _.filter(Game.creeps, (creep) => (creep.memory.role === 'harvester'&& creep.memory.home === room.name)).length;
+  let upgraders = _.filter(Game.creeps, (creep) => (creep.memory.role === 'upgrader'&& creep.memory.home === room.name)).length;
+  let builders = _.filter(Game.creeps, (creep) => (creep.memory.role === 'builder'&& creep.memory.home === room.name)).length;
+
+  let repairers = _.filter(Game.creeps, (creep) => (creep.memory.role === 'repairer'&& creep.memory.home === room.name)).length;
+  let miners = _.filter(Game.creeps, (creep) => (creep.memory.role === 'miner'&& creep.memory.home === room.name)).length;
+  let haulers = _.filter(Game.creeps, (creep) => (creep.memory.role === 'hauler'&& creep.memory.home === room.name)).length;
+  let wallers = _.filter(Game.creeps, (creep) => (creep.memory.role === 'waller'&& creep.memory.home === room.name)).length;
+  let remoteHarvesters = _.filter(Game.creeps, (creep) => (creep.memory.role === 'remoteHarvester'&& creep.memory.home === room.name)).length;
+  //lgO({claimers, harvesters, upgraders, builders, repairers, miners, haulers, wallers, remoteHarvesters});
+  return {claimers, harvesters, upgraders, builders, repairers, miners, haulers, wallers, remoteHarvesters}
+};
+
 unitCount = function() {
 	let claimers = _.filter(Game.creeps, (creep) => creep.memory.role === 'claimer');
 	let harvesters = _.filter(Game.creeps, (creep) => creep.memory.role === 'harvester');

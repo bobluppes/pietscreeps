@@ -21,7 +21,7 @@ const roleWaller = {
 					)
 				}
 			});
-			let target = findLowestHits(targets);
+			let target = creep.pos.findClosestByPath(targets);
 			creep.memory.repairTarget = target.id;
 			creep.memory.targetName = target.structureType;
 
