@@ -40,7 +40,7 @@ let roleRepairer = {
 				roleUpgrader.run(creep);
 			}
 		} else {
-			creep.getEnergy(true, true, true);
+			creep.getEnergy(true, true);
 		}
 	}
 };

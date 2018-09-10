@@ -1,11 +1,12 @@
 const roleUpgrader = require('role.upgrader');
+const roleBuilder = require('role.builder');
 
 const roleHarvester = {
 	/** @param {Creep} creep **/
 	run: function(creep) {
 		creep.identify();
 		creep.fullState();
-		creep.pos.x
+
 		if (creep.memory.target && creep.memory.full) {
 			let target = Game.getObjectById(creep.memory.target);
 			if (creep.transfer(target, RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
@@ -30,11 +31,11 @@ const roleHarvester = {
 				creep.memory.target = target.id;
 				creep.memory.targetName = target.structureType;
 			} else {
-				roleUpgrader.run(creep);
+				roleBuilder.run(creep);
 			}
 		}
 		if (!creep.memory.full) {
-			creep.getEnergy(true, true, true);
+			creep.getEnergy(true, true);
 		}
 	}
 };
