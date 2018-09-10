@@ -3,33 +3,44 @@ StructureSpawn.prototype.spawnLogic =
 	function () {
 
     let RCL = this.room.controller.level;
-    let maxPartsByRCL = {1: 2, 2: 4, 3:5, 4: 6, 5:7, 6: 8, 7: 10, 8: 12};
+    let maxPartsByRCL = {1: 2, 2: 4, 3: 5, 4: 6, 5: 7, 6: 8, 7: 10, 8: 12};
     Memory.maxParts = maxPartsByRCL[RCL.toString()];
-    lg(Memory.maxParts);
+
+    let populationSettings = {
+      builders: 2,
+      claimers: 1,
+      harvesters: 2,
+      haulers: 3,
+      miners: 2,
+      remoteHarvesters: 0,
+      repairers: 1,
+      upgraders: 2,
+      wallers: 1
+    };
 
     let {claimers, harvesters, upgraders, builders, repairers, miners, haulers, wallers, remoteHarvesters} = roomPopulation(this.room);
 
     let MinEnergyToSpawn = Math.min((this.room.energyCapacityAvailable-200),800);
 
-    if (harvesters < 2 && this.room.energyAvailable > 299) {
+    if (harvesters < populationSettings.harvesters && this.room.energyAvailable > 299) {
       this.buildCreep('harvester');
-    } else if (miners < 2 && this.room.energyAvailable > 550) {
+    } else if (miners < populationSettings.miners && this.room.energyAvailable > 550) {
       this.buildCreep('miner');
-    } else if (haulers < 2 && this.room.energyAvailable > 700) {
+    } else if (haulers < populationSettings.haulers && this.room.energyAvailable > 700) {
       this.buildCreep('hauler');
-    } else if (upgraders < 1 && this.room.energyAvailable > MinEnergyToSpawn) {
+    } else if (upgraders < populationSettings.upgraders && this.room.energyAvailable > MinEnergyToSpawn) {
       this.buildCreep('upgrader');
-    } else if (builders < 3 && this.room.energyAvailable > MinEnergyToSpawn) {
+    } else if (builders < populationSettings.builders && this.room.energyAvailable > MinEnergyToSpawn) {
       this.buildCreep('builder');
-    } else if (repairers < 1 && this.room.energyAvailable > MinEnergyToSpawn) {
+    } else if (repairers < populationSettings.repairers && this.room.energyAvailable > MinEnergyToSpawn) {
       this.buildCreep('repairer');
-    } else if (miners < 2 && this.room.energyAvailable > MinEnergyToSpawn) {
+    } else if (miners < populationSettings.miners && this.room.energyAvailable > MinEnergyToSpawn) {
       this.buildCreep('miner');
-    } else if (haulers < 2 && this.room.energyAvailable > MinEnergyToSpawn) {
+    } else if (haulers < populationSettings.haulers && this.room.energyAvailable > MinEnergyToSpawn) {
       this.buildCreep('hauler');
-    } else if (wallers < 1 && this.room.energyAvailable > MinEnergyToSpawn) {
+    } else if (wallers < populationSettings.wallers && this.room.energyAvailable > MinEnergyToSpawn) {
       this.buildCreep('waller');
-    } else if (remoteHarvesters < 0 && this.room.energyAvailable > MinEnergyToSpawn) {
+    } else if (remoteHarvesters < populationSettings.remoteHarvesters && this.room.energyAvailable > MinEnergyToSpawn) {
       this.createRemoteHarvesterCreep(this.room.energyAvailable);
     }
 
@@ -50,7 +61,6 @@ StructureSpawn.prototype.spawnLogic =
 
 StructureSpawn.prototype.buildCreep =
 	function (roleName) {
-
 
 		let newName;
     let body = [];

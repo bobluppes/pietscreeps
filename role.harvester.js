@@ -7,7 +7,6 @@ const roleHarvester = {
 		creep.identify();
 		creep.fullState();
 
-
 		if (creep.memory.target && creep.memory.full) {
 			let target = Game.getObjectById(creep.memory.target);
 			if (creep.transfer(target, RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {

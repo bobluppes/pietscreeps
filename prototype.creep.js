@@ -1,19 +1,14 @@
-Creep.prototype.lg = function(a) {
-	console.log(this.name + ' :::: ' + a)
-};
-
-
 /** @function
  @param {boolean} useStorage
  @param {boolean} useContainer */
 //TODO: dropped energy for remote harvesters
 Creep.prototype.getEnergy = 	function (useStorage, useContainer) {
   //this.clearTargets();
-	if (this.memory.target) {
-    //console.log(this.name + ' gets E from: ' + Game.getObjectById(this.memory.target));
+	if (Game.getObjectById(this.memory.target)) {
+    console.log(this.name + ' gets E from: ' + Game.getObjectById(this.memory.target));
 		let target = Game.getObjectById(this.memory.target);
 		if (target instanceof  Resource) {
-      console.log(this.name + ' gets E from: ' + Game.getObjectById(this.memory.target));
+      //console.log(this.name + ' gets E from: ' + Game.getObjectById(this.memory.target));
       if (this.pickup(target) === ERR_NOT_IN_RANGE) {
         this.moveTo(target, {reusePath: 10, visualizePathStyle: {stroke: '#0bff00'}});
       } else if (this.pickup(target) !== OK) {
@@ -29,7 +24,7 @@ Creep.prototype.getEnergy = 	function (useStorage, useContainer) {
 		} else {
       if (this.harvest(target) === ERR_NOT_IN_RANGE) {
         this.moveTo(target, {reusePath: 10, visualizePathStyle: {stroke: '#00ff23'}});
-      } else if (this.harvest(target) === ERR_NOT_ENOUGH_RESOURCES) {
+      } else if (this.harvest(target) !== OK) {
         this.clearTargets();
       }
 		}
@@ -61,6 +56,7 @@ Creep.prototype.getEnergy = 	function (useStorage, useContainer) {
           break;
       }
     }
+    //lg(target);
 		if (target) {
 			this.memory.target = target.id;
       console.log(this.name + ' chose: ' + Game.getObjectById(this.memory.target));
@@ -108,8 +104,7 @@ Creep.prototype.fullState =
 		}
 	};
 
-/** @function
- */
+/** @function */
 Creep.prototype.clearTargets =
 	function () {
 		this.memory.target = false;
@@ -141,6 +136,7 @@ Creep.prototype.structureTypeAvgHits =
 		return hitsTot/structures.length
 	};
 
+/** @function */
 Creep.prototype.findMostProgressed = function (targets) {
   targets.sort(function (a, b) {
     return a.progress - b.progress
@@ -150,7 +146,6 @@ Creep.prototype.findMostProgressed = function (targets) {
 	}
   return this.pos.findClosestByPath(targets)
 };
-
 
 Creep.prototype.identify =
 	function () {
@@ -196,6 +191,10 @@ Creep.prototype.findClosest =
 		}
 		return target
 	};
+
+/** @function */
+Creep.prototype.lg = function(a) {console.log(this.name + ' :::: ' + a)};
+
 
 
 

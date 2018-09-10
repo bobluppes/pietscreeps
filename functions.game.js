@@ -1,22 +1,3 @@
-lg = function (a) {
-	console.log('log:::' + a)
-};
-
-lgO = function (o) {
-  console.log('logObj:::' + JSON.stringify(o))
-};
-
-pry = function () {
-	console.log('>>>>>>>>>TOT HIER')
-};
-
-/** @function
- @param {string} targetFlag
- */
-bouwClaimer = function (targetFlag = 'claimFlag1') {
-	Game.spawns['Spawn2'].createClaimerCreep(targetFlag);
-};
-
 /** @function
  @param {object} targets
  @param {string} een
@@ -122,6 +103,18 @@ getPopulation = function(role) {
 		case 'wallers': return _.filter(Game.creeps, (creep) => creep.memory.role == 'waller').length;
 		case 'protectors': return _.filter(Game.creeps, (creep) => creep.memory.role == 'protector').length;
 	}
-	};
+};
 
+//DEBUG HELP FUNCTIONS
+lg = function (a) {console.log('log:::' + a)};
 
+lgO = function (o) {console.log('logObj:::' + JSON.stringify(o))};
+
+pry = function () {console.log('>>>>>>>>>TOT HIER')};
+
+/** @function
+ @param {string} targetFlag
+ */
+bouwClaimer = function (targetFlag = 'claimFlag1') {
+  Game.spawns['Spawn2'].createClaimerCreep(targetFlag);
+};
