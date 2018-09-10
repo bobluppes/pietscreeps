@@ -19,5 +19,4 @@ let logger = {
 	}
 };
 
-
 module.exports = logger;

@@ -47,11 +47,13 @@ Creep.prototype.getEnergy = 	function (useStorage, useContainer) {
           target = containers.sort(function (a, b) {
             return b.store[RESOURCE_ENERGY] - a.store[RESOURCE_ENERGY]
           })[0];
-        	let foundEnergy = target.pos.lookFor(LOOK_ENERGY);
-          if (foundEnergy.length) {
-          	console.log('there is left over energy on my container');
-        		target = foundEnergy[0];
-      		}
+          if (target) {
+            let foundEnergy = target.pos.lookFor(LOOK_ENERGY);
+            if (foundEnergy.length) {
+              console.log('there is left over energy on my container');
+              target = foundEnergy[0];
+            }
+					}
           break;
         default:
           target = this.pos.findClosestByPath(FIND_STRUCTURES, {
@@ -139,7 +141,15 @@ Creep.prototype.structureTypeAvgHits =
 		return hitsTot/structures.length
 	};
 
-
+Creep.prototype.findMostProgressed = function (targets) {
+  targets.sort(function (a, b) {
+    return a.progress - b.progress
+  });
+	if (targets.length > 3) {
+		targets = targets.splice(2)
+	}
+  return this.pos.findClosestByPath(targets)
+};
 
 
 Creep.prototype.identify =
