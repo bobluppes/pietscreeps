@@ -9,7 +9,7 @@ const roleUpgrader = {
 			}
 		}
 		else {
-			creep.getEnergy(true, false, false);
+			creep.getEnergy(true, false);
 		}
 	}
 };

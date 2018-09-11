@@ -1,18 +1,3 @@
-lg = function (a) {
-	console.log('log:::' + a)
-};
-
-pry = function () {
-	console.log('>>>>>>>>>TOT HIER')
-};
-
-/** @function
- @param {string} targetFlag
- */
-bouwClaimer = function (targetFlag = 'claimFlag1') {
-	Game.spawns['Spawn2'].createClaimerCreep(targetFlag);
-};
-
 /** @function
  @param {object} targets
  @param {string} een
@@ -76,6 +61,21 @@ findLowestHits = function (targets) {
 	return target
 };
 
+roomPopulation = function(room) {
+  let claimers = _.filter(Game.creeps, (creep) => (creep.memory.role === 'claimer' && creep.memory.home === room.name)).length;
+  let harvesters = _.filter(Game.creeps, (creep) => (creep.memory.role === 'harvester'&& creep.memory.home === room.name)).length;
+  let upgraders = _.filter(Game.creeps, (creep) => (creep.memory.role === 'upgrader'&& creep.memory.home === room.name)).length;
+  let builders = _.filter(Game.creeps, (creep) => (creep.memory.role === 'builder'&& creep.memory.home === room.name)).length;
+
+  let repairers = _.filter(Game.creeps, (creep) => (creep.memory.role === 'repairer'&& creep.memory.home === room.name)).length;
+  let miners = _.filter(Game.creeps, (creep) => (creep.memory.role === 'miner'&& creep.memory.home === room.name)).length;
+  let haulers = _.filter(Game.creeps, (creep) => (creep.memory.role === 'hauler'&& creep.memory.home === room.name)).length;
+  let wallers = _.filter(Game.creeps, (creep) => (creep.memory.role === 'waller'&& creep.memory.home === room.name)).length;
+  let remoteHarvesters = _.filter(Game.creeps, (creep) => (creep.memory.role === 'remoteHarvester'&& creep.memory.home === room.name)).length;
+  //lgO({claimers, harvesters, upgraders, builders, repairers, miners, haulers, wallers, remoteHarvesters});
+  return {claimers, harvesters, upgraders, builders, repairers, miners, haulers, wallers, remoteHarvesters}
+};
+
 unitCount = function() {
 	let claimers = _.filter(Game.creeps, (creep) => creep.memory.role === 'claimer');
 	let harvesters = _.filter(Game.creeps, (creep) => creep.memory.role === 'harvester');
@@ -103,18 +103,18 @@ getPopulation = function(role) {
 		case 'wallers': return _.filter(Game.creeps, (creep) => creep.memory.role == 'waller').length;
 		case 'protectors': return _.filter(Game.creeps, (creep) => creep.memory.role == 'protector').length;
 	}
-	};
+};
 
-containerLR = function () {
+//DEBUG HELP FUNCTIONS
+lg = function (a) {console.log('log:::' + a)};
 
+lgO = function (o) {console.log('logObj:::' + JSON.stringify(o))};
 
-	let containers = _.filter(Game.structures, s => s.structureType === STRUCTURE_CONTAINER);
+pry = function () {console.log('>>>>>>>>>TOT HIER')};
 
-	lg(containers);
-	containers.sort(function (a, b) {
-	return a.pos.x - b.pos.x
-	});
-	lg(containers);
-	//containers[0].memory.side = 'Right';
-	//containers[1].memory.side = 'Left';
+/** @function
+ @param {string} targetFlag
+ */
+bouwClaimer = function (targetFlag = 'claimFlag1') {
+  Game.spawns['Spawn2'].createClaimerCreep(targetFlag);
 };

@@ -5,6 +5,7 @@ const roleWaller = {
 		//creep.clearTargets();
 		creep.identify();
 		creep.fullState();
+
 		if (creep.memory.repairTarget && creep.memory.full) {
 			let target = Game.getObjectById(creep.memory.repairTarget);
 			lg(creep.memory.repairTarget);
@@ -24,12 +25,12 @@ const roleWaller = {
 					)
 				}
 			});
-			let target = findLowestHits(targets);
+			let target = creep.pos.findClosestByPath(targets);
 			creep.memory.repairTarget = target.id;
 			creep.memory.targetName = target.structureType;
 
 		} else {
-			creep.getEnergy(true, true, false);
+			creep.getEnergy(true, true);
 		}
 	}
 };
